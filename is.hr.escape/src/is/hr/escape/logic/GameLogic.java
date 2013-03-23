@@ -33,11 +33,6 @@ public class GameLogic {
     public static final int GOAL_ROW = 3;
     public static final int GOAL_CAR_ID = 0;  // first can assumed to be the goal car.
 
-
-
-
-
-
     /**
      * Create a new car from a string representation
      *
@@ -52,7 +47,6 @@ public class GameLogic {
      * @return A car object if successful, null otherwise.
      */
     public Car carFromString( String carStr ) {
-        Car carReturn = null;
         Scanner s = new Scanner( carStr );
         s.findInLine("\\s*\\(\\s*(\\w+)\\s*(\\d+)\\s*(\\d+)\\s*(\\d+)\\s*\\)\\s*");
         try {
@@ -73,7 +67,7 @@ public class GameLogic {
                     int length = Integer.parseInt( result.group( 4 ) );
                     Car car = new Car( orientation, col, row, length );
                     if ( isWithinBounds( car ) ) {
-                        carReturn = car;
+                        return car;
                     }
                 }
             }
@@ -81,8 +75,11 @@ public class GameLogic {
         catch ( IllegalStateException e ) {
             // Match not found.
         }
-        s.close();
-        return carReturn;
+        finally {
+            s.close();
+        }
+
+        return null;
     }
 
 
