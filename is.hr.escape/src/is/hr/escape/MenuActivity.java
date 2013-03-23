@@ -24,5 +24,6 @@ public class MenuActivity extends Activity {
 
     public void buttonClick(View view) {
         Intent intent = new Intent(this, GameActivity.class);
+        startActivity(intent);
     }
 }
