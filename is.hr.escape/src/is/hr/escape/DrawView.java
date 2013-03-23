@@ -16,6 +16,7 @@ import java.util.List;
  * Time: 10:11
  */
 public class DrawView extends View {
+    GameHandler handler;
 
     private Car _movingCar = null;
     private List<Car> _carList;
@@ -25,10 +26,8 @@ public class DrawView extends View {
 
         setBackgroundColor(Color.WHITE);
     }
-
-    public void set_cars(List<Car> carList)
-    {
-        _carList = carList;
+    public void setGameHandler(GameHandler handler) {
+        this.handler = handler;
     }
 
     @Override
