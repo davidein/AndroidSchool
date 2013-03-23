@@ -34,11 +34,20 @@ public class GameActivity extends Activity implements GameHandler {
     }
 
     public List<Action> getActionsFor(Car car) {
-        //TODO
-        return logic.getActions();
+        List<Action> allActions =  logic.getActions();
+        List<Action> actions = new ArrayList<Action>();
+
+        for(Action action : allActions) {
+            if(action.getId() == car.getId()) {
+                actions.add(action);
+            }
+        }
+
+        return actions;
     }
 
     public void actionPerformed(Action action) {
-        //TODO
+        logic.makeAction(action);
+        drawView.update();
     }
 }

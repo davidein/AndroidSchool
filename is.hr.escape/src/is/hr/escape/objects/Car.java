@@ -13,6 +13,7 @@ import is.hr.escape.helpers.Orientation;
  */
 public class Car {
     private Orientation m_orientation;
+    private int m_id;
     private int m_col;
     private int m_row;
     private int m_length;
@@ -30,6 +31,10 @@ public class Car {
         m_row = other.m_row;
         m_length = other.m_length;
     }
+
+    public int getId() { return m_id; }
+
+    public void setId(int id) { m_id = id; }
 
     public int getCol() { return m_col; }
 

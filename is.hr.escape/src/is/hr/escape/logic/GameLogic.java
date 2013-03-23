@@ -137,10 +137,13 @@ public class GameLogic {
     public boolean setup( String puzzleStr ) {
         List<Car> cars = new ArrayList<Car>();
         String carsStr[] = puzzleStr.split(",");
+        int id = 0;
         for ( String carStr : carsStr ) {
             Car car = carFromString( carStr );
             if ( car != null ) {
+                car.setId(id);
                 cars.add( car );
+                id++;
             }
             else { return false; }
         }

@@ -30,6 +30,10 @@ public class DrawView extends View {
         this.handler = handler;
     }
 
+    public void update() {
+        //TODO: underlying game state has changed, update the display
+    }
+
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
