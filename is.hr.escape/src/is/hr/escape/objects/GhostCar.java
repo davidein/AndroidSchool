@@ -2,6 +2,7 @@ package is.hr.escape.objects;
 
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Log;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,6 +36,8 @@ public class GhostCar {
     }
 
     public boolean isWithinBounds(Point pos) {
-        return pos.x >= bounds.left && pos.x <= bounds.right && pos.y >= bounds.top && pos.y <= bounds.bottom;
+        Log.e("Position", String.format("%s %s", pos, bounds));
+        return bounds.contains(pos.x, pos.y);
+        //return pos.x >= bounds.left && pos.x <= bounds.right && pos.y >= bounds.top && pos.y <= bounds.bottom;
     }
 }

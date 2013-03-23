@@ -144,6 +144,9 @@ public class DrawView extends View {
                     min = gridToCoordinates(min.x, min.y);
                     max = gridToCoordinates(max.x, max.y);
                     Rect bounds = new Rect(min.x, min.y, max.x, max.y);
+                    //Log.e("Test", String.format("min.x=%d min.y=%d | max.x=%d max.y=%d",min.x,min.y, max.x, max.y));
+                    //Log.e("Mouse", String.format("x:%d, y:%d", x, y));
+
                     _ghost = new GhostCar(selected, gridToCoordinates(selected.getCol(), selected.getRow()), bounds);
                 }
                 break;
@@ -151,6 +154,8 @@ public class DrawView extends View {
                 if(_ghost != null) {
                     Point newPos = new Point(x, y);
                     if(_ghost.isWithinBounds(newPos)) {
+                        Log.e("BOOO", "BOOO2");
+
                         _ghost.setPosition(newPos);
                     }
                 }
@@ -170,7 +175,6 @@ public class DrawView extends View {
         int rowHeight = getHeight() / handler.getRows();
         col = x / columnWidth;
         row = y / rowHeight;
-        //Log.e("Test", String.format("X=%d Y=%d | col=%d row=%d",x,y, col, row));
         return new Point(col, row);
     }
 
