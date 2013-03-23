@@ -2,6 +2,7 @@ package is.hr.escape;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import is.hr.escape.logic.Action;
 import is.hr.escape.logic.GameLogic;
 import is.hr.escape.objects.Car;

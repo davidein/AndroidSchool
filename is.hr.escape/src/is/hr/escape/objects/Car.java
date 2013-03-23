@@ -30,6 +30,7 @@ public class Car {
         m_col = other.m_col;
         m_row = other.m_row;
         m_length = other.m_length;
+        m_id = other.m_id;
     }
 
     public int getId() { return m_id; }

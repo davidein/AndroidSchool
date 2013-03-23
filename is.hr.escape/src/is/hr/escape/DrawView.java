@@ -3,6 +3,7 @@ package is.hr.escape;
 import android.content.Context;
 import android.graphics.*;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import is.hr.escape.helpers.Orientation;
@@ -32,6 +33,7 @@ public class DrawView extends View {
 
     public void update() {
         //TODO: underlying game state has changed, update the display
+        invalidate();
     }
 
     @Override
@@ -43,8 +45,13 @@ public class DrawView extends View {
         int baseWidth = getWidth() / handler.getCols();
         int baseHeight = getHeight() / handler.getRows();
 
+        Car ghostCar = null;
         for (Car car : handler.getCars())
         {
+            if(_ghost != null && car.getId() ==_ghost.getId()) {
+                ghostCar = car;
+                continue;
+            }
             Paint carPainter = new Paint();
             carPainter.setColor(Color.BLACK);
 
@@ -56,6 +63,21 @@ public class DrawView extends View {
             else
             {
                 carRect.set((car.getCol())*baseWidth,(car.getRow())*baseHeight, (car.getCol()+1)*baseWidth,(car.getRow()+car.getLength())*baseHeight);
+            }
+            canvas.drawRect(carRect, carPainter);
+        }
+        if(ghostCar != null) {
+            Paint carPainter = new Paint();
+            carPainter.setColor(Color.GREEN);
+
+            Rect carRect = new Rect();
+            if (ghostCar.getOrientation() == Orientation.Horizontal)
+            {
+                carRect.set((ghostCar.getCol())*baseWidth,(ghostCar.getRow())*baseHeight, (ghostCar.getCol()+ghostCar.getLength()) * baseWidth,(ghostCar.getRow()+1)*baseHeight);
+            }
+            else
+            {
+                carRect.set((ghostCar.getCol())*baseWidth,(ghostCar.getRow())*baseHeight, (ghostCar.getCol()+1)*baseWidth,(ghostCar.getRow()+ghostCar.getLength())*baseHeight);
             }
             canvas.drawRect(carRect, carPainter);
         }
@@ -137,6 +159,7 @@ public class DrawView extends View {
                 _ghost = null;
                 break;
         }
+        update();
 
         return true;
     }
