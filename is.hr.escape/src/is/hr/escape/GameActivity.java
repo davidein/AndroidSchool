@@ -25,6 +25,8 @@ public class GameActivity extends Activity implements GameHandler {
         logic = new GameLogic();
         setContentView(R.layout.game);
 
+        logic.setup("(H 1 3 2), (V 0 0 2), (V 0 2 3), (H 0 5 2), (H 2 0 3), (H 4 1 2), (V 3 2 3), (V 5 3 3)");
+
         drawView = (DrawView) findViewById(R.id.drawView);
         drawView.setGameHandler(this);
     }

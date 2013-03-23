@@ -38,6 +38,40 @@ public class DrawView extends View {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        drawGrid(canvas);
+
+        int baseWidth = getWidth() / handler.getCols();
+        int baseHeight = getHeight() / handler.getRows();
+
+        for (Car car : handler.getCars())
+        {
+            Paint carPainter = new Paint();
+            carPainter.setColor(Color.BLACK);
+
+            Rect carRect = new Rect();
+            if (car.getOrientation() == Orientation.Horizontal)
+            {
+                carRect.set((car.getCol())*baseWidth,(car.getRow())*baseHeight, (car.getCol()+car.getLength()) * baseWidth,(car.getRow()+1)*baseHeight);
+            }
+            else
+            {
+                carRect.set((car.getCol())*baseWidth,(car.getRow())*baseHeight, (car.getCol()+1)*baseWidth,(car.getRow()+car.getLength())*baseHeight);
+            }
+            canvas.drawRect(carRect, carPainter);
+        }
+
+        /*
+        Paint carPainter = new Paint();
+        carPainter.setColor(Color.BLACK);
+
+        Rect carRect = new Rect();
+        //carRect.set(car.getRow(), car.getCol(), 1, 1);
+        carRect.set(baseWidth*3,baseHeight*3, 4*baseWidth, 4*baseHeight);
+        canvas.drawRect(carRect, carPainter); */
+    }
+
+    private void drawGrid(Canvas canvas)
+    {
         Paint linePainter = new Paint();
         linePainter.setColor(Color.RED);
         for (int irow = 1;irow<handler.getRows();irow++)
