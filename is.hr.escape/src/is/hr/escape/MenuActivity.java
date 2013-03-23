@@ -1,7 +1,9 @@
 package is.hr.escape;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 /**
  * User: David Einarsson
@@ -18,5 +20,9 @@ public class MenuActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.menu);
+    }
+
+    public void buttonClick(View view) {
+        Intent intent = new Intent(this, GameActivity.class);
     }
 }
