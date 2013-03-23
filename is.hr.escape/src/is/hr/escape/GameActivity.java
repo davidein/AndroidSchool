@@ -13,10 +13,15 @@ import is.hr.escape.logic.GameLogic;
  */
 public class GameActivity extends Activity {
     private GameLogic logic;
+    private DrawView drawView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         logic = new GameLogic();
         setContentView(R.layout.game);
+
+        drawView = (DrawView) findViewById(R.id.drawView);
+
+        drawView.set_cars(logic.getCars());
     }
 }

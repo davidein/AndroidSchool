@@ -10,12 +10,29 @@ import java.util.regex.MatchResult;
 
 public class GameLogic {
 
-    public static final int NUM_COLS = 6;
-    public static final int NUM_ROWS = 6;
+    public int get_numCols() {
+        return _numCols;
+    }
+
+    public void set_numCols(int _numCols) {
+        this._numCols = _numCols;
+    }
+
+    public int get_numRows() {
+        return _numRows;
+    }
+
+    public void set_numRows(int _numRows) {
+        this._numRows = _numRows;
+    }
+
+    private int _numCols = 6;
+    private int _numRows = 6;
 
     public static final int GOAL_COL = 5;
     public static final int GOAL_ROW = 3;
     public static final int GOAL_CAR_ID = 0;  // first can assumed to be the goal car.
+
 
 
 
@@ -34,9 +51,8 @@ public class GameLogic {
      *
      * @return A car object if successful, null otherwise.
      */
-    public static Car carFromString( String carStr ) {
+    public Car carFromString( String carStr ) {
         Car carReturn = null;
-        //System.out.println( "[" + carStr + "]" );
         Scanner s = new Scanner( carStr );
         s.findInLine("\\s*\\(\\s*(\\w+)\\s*(\\d+)\\s*(\\d+)\\s*(\\d+)\\s*\\)\\s*");
         try {
@@ -120,7 +136,7 @@ public class GameLogic {
      */
     public boolean setup( String puzzleStr ) {
         List<Car> cars = new ArrayList<Car>();
-        String carsStr[] = puzzleStr.split( "," );
+        String carsStr[] = puzzleStr.split(",");
         for ( String carStr : carsStr ) {
             Car car = carFromString( carStr );
             if ( car != null ) {
@@ -149,7 +165,7 @@ public class GameLogic {
                         actions.add( new Action( i, col-colOn ) );
                     }
                     colOn += car.getLength() - 1;
-                    for ( int col=colOn+1; col<NUM_COLS && m_grid[col][rowOn]==-1; ++col ) {
+                    for ( int col=colOn+1; col< _numCols && m_grid[col][rowOn]==-1; ++col ) {
                         actions.add( new Action( i, col-colOn ) );
                     }
                 }
@@ -158,7 +174,7 @@ public class GameLogic {
                         actions.add( new Action( i, row-rowOn ) );
                     }
                     rowOn += car.getLength() - 1;
-                    for ( int row=rowOn+1; row<NUM_ROWS && m_grid[colOn][row]==-1; ++row ) {
+                    for ( int row=rowOn+1; row< _numRows && m_grid[colOn][row]==-1; ++row ) {
                         actions.add( new Action( i, row-rowOn ) );
                     }
                 }
@@ -235,8 +251,8 @@ public class GameLogic {
     public String toString()  {
         updateGrid( );
         StringBuilder sb = new StringBuilder();
-        for ( int row=NUM_ROWS-1; row>=0; --row ) {
-            for ( int col=0; col<NUM_COLS; ++col ) {
+        for ( int row= _numRows -1; row>=0; --row ) {
+            for ( int col=0; col< _numCols; ++col ) {
                 if ( m_grid[col][row] == -1 ) {
                     sb.append( '.' );
                 }
@@ -260,7 +276,7 @@ public class GameLogic {
 
     private List<Car> m_cars;
     private boolean   m_isSolved;
-    private int[][]   m_grid = new int[NUM_COLS][NUM_ROWS];
+    private int[][]   m_grid = new int[_numCols][_numRows];
 
     private static boolean intersect( int x1, int dx1, int x2, int dx2 ) {
         return ( (x1 <= x2) && (x2 < x1 + dx1) ) || ( (x2 <= x1) && (x1 < x2 + dx2) );
@@ -289,13 +305,13 @@ public class GameLogic {
         }
     }
 
-    private static boolean isWithinBounds( Car carIn  ) {
+    private boolean isWithinBounds( Car carIn  ) {
         boolean ok;
         if ( carIn.getOrientation() == Orientation.Horizontal ) {
-            ok = (carIn.getCol() >= 0) && ((carIn.getCol() + carIn.getLength()) <= NUM_COLS);
+            ok = (carIn.getCol() >= 0) && ((carIn.getCol() + carIn.getLength()) <= _numCols);
         }
         else {
-            ok = (carIn.getRow() >= 0) && ((carIn.getRow() + carIn.getLength()) <= NUM_ROWS);
+            ok = (carIn.getRow() >= 0) && ((carIn.getRow() + carIn.getLength()) <= _numRows);
         }
         return ok;
     }
@@ -313,8 +329,8 @@ public class GameLogic {
     }
 
     private void updateGrid( ) {
-        for ( int col=0; col<NUM_COLS; ++col ) {
-            for ( int row=0; row<NUM_ROWS; ++row ) {
+        for ( int col=0; col< _numCols; ++col ) {
+            for ( int row=0; row< _numRows; ++row ) {
                 m_grid[col][row] = -1;
             }
         }
