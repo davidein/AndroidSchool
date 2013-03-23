@@ -73,23 +73,14 @@ public class DrawView extends View {
             Rect carRect = new Rect();
             if (ghostCar.getOrientation() == Orientation.Horizontal)
             {
-                carRect.set((ghostCar.getCol())*baseWidth,(ghostCar.getRow())*baseHeight, (ghostCar.getCol()+ghostCar.getLength()) * baseWidth,(ghostCar.getRow()+1)*baseHeight);
+                carRect.set(_ghost.getX(), _ghost.getY(), _ghost.getX() + (ghostCar.getLength() * baseWidth), _ghost.getY() + baseHeight);
             }
             else
             {
-                carRect.set((ghostCar.getCol())*baseWidth,(ghostCar.getRow())*baseHeight, (ghostCar.getCol()+1)*baseWidth,(ghostCar.getRow()+ghostCar.getLength())*baseHeight);
+                carRect.set(_ghost.getX(), _ghost.getY(), _ghost.getX() + baseWidth, _ghost.getY() + (ghostCar.getLength())*baseHeight);
             }
             canvas.drawRect(carRect, carPainter);
         }
-
-        /*
-        Paint carPainter = new Paint();
-        carPainter.setColor(Color.BLACK);
-
-        Rect carRect = new Rect();
-        //carRect.set(car.getRow(), car.getCol(), 1, 1);
-        carRect.set(baseWidth*3,baseHeight*3, 4*baseWidth, 4*baseHeight);
-        canvas.drawRect(carRect, carPainter); */
     }
 
     private void drawGrid(Canvas canvas)
@@ -144,23 +135,37 @@ public class DrawView extends View {
                     min = gridToCoordinates(min.x, min.y);
                     max = gridToCoordinates(max.x, max.y);
                     Rect bounds = new Rect(min.x, min.y, max.x, max.y);
-                    //Log.e("Test", String.format("min.x=%d min.y=%d | max.x=%d max.y=%d",min.x,min.y, max.x, max.y));
-                    //Log.e("Mouse", String.format("x:%d, y:%d", x, y));
 
-                    _ghost = new GhostCar(selected, gridToCoordinates(selected.getCol(), selected.getRow()), bounds);
+                    Point screenPos = gridToCoordinates(selected.getCol(), selected.getRow());
+                    Point offset = new Point(screenPos.x - x, screenPos.y - y);
+                    _ghost = new GhostCar(selected, screenPos, bounds, offset   );
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
                 if(_ghost != null) {
                     Point newPos = new Point(x, y);
                     if(_ghost.isWithinBounds(newPos)) {
-                        Log.e("BOOO", "BOOO2");
 
                         _ghost.setPosition(newPos);
                     }
                 }
                 break;
+            case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
+                if(_ghost != null) {
+                    Point newPos = coordinatesToGrid(_ghost.getX(), _ghost.getY(), true);
+                    Point oldPos = new Point(_ghost.getCar().getCol(), _ghost.getCar().getRow());
+                    int offset = 0;
+                    switch(_ghost.getCar().getOrientation()) {
+                        case Horizontal:
+                            offset = newPos.x - oldPos.x;
+                            break;
+                        case Vertical:
+                            offset = newPos.y - oldPos.y;
+                            break;
+                    }
+                    handler.actionPerformed(new Action(_ghost.getId(), offset));
+                }
                 _ghost = null;
                 break;
         }
@@ -169,12 +174,17 @@ public class DrawView extends View {
         return true;
     }
 
-    private Point coordinatesToGrid(int x, int y) {
+    private Point coordinatesToGrid(int x, int y, boolean round) {
         int col, row;
         int columnWidth = getWidth() / handler.getCols();
         int rowHeight = getHeight() / handler.getRows();
-        col = x / columnWidth;
-        row = y / rowHeight;
+        if(round) {
+            col = Math.round(x / (float)columnWidth);
+            row = Math.round(y / (float)rowHeight);
+        } else {
+            col = x / columnWidth;
+            row = y / rowHeight;
+        }
         return new Point(col, row);
     }
 
@@ -190,7 +200,7 @@ public class DrawView extends View {
     }
 
     private Car getCar(int x, int y) {
-        Point gridPoint = coordinatesToGrid(x, y);
+        Point gridPoint = coordinatesToGrid(x, y, false);
 
         List<Car> cars = handler.getCars();
         for(Car car : cars) {

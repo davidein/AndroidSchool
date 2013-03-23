@@ -15,7 +15,7 @@ public class Action {
     private int m_id;
     private int m_offset;
 
-    Action( int id, int offset ) {
+    public Action( int id, int offset ) {
         m_id = id;
         m_offset = offset;
     }

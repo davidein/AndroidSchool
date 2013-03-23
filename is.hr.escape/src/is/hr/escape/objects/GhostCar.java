@@ -3,6 +3,7 @@ package is.hr.escape.objects;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.Log;
+import is.hr.escape.helpers.Orientation;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,12 +17,19 @@ public class GhostCar {
     private int y;
     private int id;
     private Rect bounds;
+    private Point originalPosition;
+    private Point offset;
+    private Orientation orientation;
+    private Car car;
 
-    public GhostCar(Car car, Point coordinates, Rect bounds) {
+    public GhostCar(Car car, Point coordinates, Rect bounds, Point touchOffset) {
         id = car.getId();
         x = coordinates.x;
         y = coordinates.y;
         this.bounds = bounds;
+        offset = touchOffset;
+        orientation = car.getOrientation();
+        this.car = car;
     }
 
     public int getX() { return x; }
@@ -30,14 +38,23 @@ public class GhostCar {
 
     public int getId() { return id; }
 
+    public Car getCar() { return car; }
+
     public void setPosition(Point newPos) {
-        x = newPos.x;
-        y = newPos.y;
+        if(orientation == Orientation.Vertical) {
+            y = newPos.y + offset.y;
+        } else {
+            x = newPos.x + offset.x;
+        }
     }
 
     public boolean isWithinBounds(Point pos) {
-        Log.e("Position", String.format("%s %s", pos, bounds));
-        return bounds.contains(pos.x, pos.y);
-        //return pos.x >= bounds.left && pos.x <= bounds.right && pos.y >= bounds.top && pos.y <= bounds.bottom;
+        pos = new Point(pos.x + offset.x, pos.y + offset.y);
+
+        if(orientation == Orientation.Vertical) {
+            return pos.y >= bounds.top && pos.y <= bounds.bottom;
+        } else {
+            return pos.x >= bounds.left && pos.x <= bounds.right;
+        }
     }
 }
