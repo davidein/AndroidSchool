@@ -50,4 +50,12 @@ public class GameActivity extends Activity implements GameHandler {
         logic.makeAction(action);
         drawView.update();
     }
+
+    public int getRows() {
+        return logic.get_numRows();
+    }
+
+    public int getCols() {
+        return logic.get_numCols();
+    }
 }

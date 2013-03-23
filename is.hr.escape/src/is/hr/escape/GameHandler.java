@@ -16,4 +16,6 @@ public interface GameHandler {
     List<Car> getCars();
     List<Action> getActionsFor(Car car);
     void actionPerformed(Action action);
+    int getRows();
+    int getCols();
 }
