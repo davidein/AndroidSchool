@@ -25,12 +25,6 @@ public class Action {
     public int getOffset() { return m_offset; }
 
     public String toString( ) {
-        StringBuilder sb = new StringBuilder();
-        sb.append( '(' );
-        sb.append( getId() );
-        sb.append( ',' );
-        sb.append( getOffset() );
-        sb.append( ')' );
-        return sb.toString();
+        return String.format("(%d %d)", getId(), getOffset());
     }
 }

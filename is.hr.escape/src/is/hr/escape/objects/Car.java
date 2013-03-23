@@ -49,17 +49,7 @@ public class Car {
     }
 
     public String toString( ) {
-        StringBuilder sb = new StringBuilder();
-        sb.append( '(' );
-        sb.append( getOrientation() == Orientation.Horizontal ? 'H' : 'V' );
-        sb.append( ' ' );
-        sb.append( getCol() );
-        sb.append( ' ' );
-        sb.append( getRow() );
-        sb.append( ' ' );
-        sb.append( getLength() );
-        sb.append( ')' );
-        return sb.toString();
+        return String.format("(%s %d %d %d)", getOrientation() == Orientation.Horizontal ? 'H' : 'V', getCol(), getRow(), getLength());
     }
 
 }
