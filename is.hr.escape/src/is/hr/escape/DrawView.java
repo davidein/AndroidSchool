@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
+import is.hr.escape.state.GameState;
 
 /**
  * User: David Einarsson
@@ -12,11 +13,16 @@ import android.view.View;
  * Time: 10:11
  */
 public class DrawView extends View {
+    private GameState state;
 
     public DrawView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         setBackgroundColor(Color.WHITE);
+    }
+
+    public void setGameState(GameState state) {
+        this.state = state;
     }
 
     @Override
