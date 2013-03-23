@@ -1,4 +1,4 @@
-/**
+package is.hr.escape.logic; /**
  * This class provides the logic for the TrafficJam puzzle.
  *
  */
@@ -208,7 +208,7 @@ public class GameLogic {
     }
 
     /**
-     * Get a list of the actions possible in the current state.
+     * Get a list of the actions possible in the current logic.
      *
      * @return List of possible actions.
      */
@@ -261,7 +261,7 @@ public class GameLogic {
     }
 
     /**
-     * Execute the given action in the current puzzle state and update it accordingly.
+     * Execute the given action in the current puzzle logic and update it accordingly.
      *
      * @param action  The action to execute (assumed to be legitimate).
      */
@@ -276,7 +276,7 @@ public class GameLogic {
     /**
      * Undo the given action.
      *
-     * @param action  The action to undo (assumed to be the last action executed in the state).
+     * @param action  The action to undo (assumed to be the last action executed in the logic).
      */
     public void retractAction( Action action ) {
         m_cars.get( action.getId() ).slide( -action.getOffset() );
@@ -304,9 +304,9 @@ public class GameLogic {
     }
 
     /**
-     * Returns a string representation of the puzzle state.
+     * Returns a string representation of the puzzle logic.
      *
-     * @return  A string, representing the state.
+     * @return  A string, representing the logic.
      */
     public String toString()  {
         updateGrid( );
