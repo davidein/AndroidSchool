@@ -1,6 +1,7 @@
 package is.hr.escape;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
@@ -16,5 +17,10 @@ public class DrawView extends View {
         super(context, attrs);
 
         setBackgroundColor(Color.WHITE);
+    }
+
+    @Override
+    public void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
     }
 }
