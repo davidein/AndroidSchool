@@ -166,17 +166,18 @@ public class DrawView extends View {
 
     private Point coordinatesToGrid(int x, int y) {
         int col, row;
-        int columnWidth = getWidth() / handler.getCols() + 1;
-        int rowHeight = getHeight() / handler.getRows() + 1;
+        int columnWidth = getWidth() / handler.getCols();
+        int rowHeight = getHeight() / handler.getRows();
         col = x / columnWidth;
         row = y / rowHeight;
+        //Log.e("Test", String.format("X=%d Y=%d | col=%d row=%d",x,y, col, row));
         return new Point(col, row);
     }
 
     private Point gridToCoordinates(int column, int row) {
         int x, y;
-        int columnWidth = getWidth() / handler.getCols() + 1;
-        int rowHeight = getHeight() / handler.getRows() + 1;
+        int columnWidth = getWidth() / handler.getCols();
+        int rowHeight = getHeight() / handler.getRows();
 
         x = column * columnWidth;
         y = row * rowHeight;
@@ -191,12 +192,12 @@ public class DrawView extends View {
         for(Car car : cars) {
             switch(car.getOrientation()) {
                 case Horizontal:
-                    if(gridPoint.y == car.getRow() && gridPoint.x >= car.getCol() && gridPoint.x <= car.getCol() + car.getLength()) {
+                    if(gridPoint.y == car.getRow() && gridPoint.x >= car.getCol() && gridPoint.x < car.getCol() + car.getLength()) {
                         return car;
                     }
                     break;
                 case Vertical:
-                    if(gridPoint.x == car.getCol() && gridPoint.y >= car.getRow() && gridPoint.y <= car.getRow() + car.getLength()) {
+                    if(gridPoint.x == car.getCol() && gridPoint.y >= car.getRow() && gridPoint.y < car.getRow() + car.getLength()) {
                         return car;
                     }
                     break;
