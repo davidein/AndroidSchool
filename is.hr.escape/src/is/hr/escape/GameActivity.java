@@ -2,6 +2,7 @@ package is.hr.escape;
 
 import android.app.Activity;
 import android.os.Bundle;
+import is.hr.escape.logic.GameLogic;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,10 +12,11 @@ import android.os.Bundle;
  * To change this template use File | Settings | File Templates.
  */
 public class GameActivity extends Activity {
+    private GameLogic logic;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        logic = new GameLogic();
         setContentView(R.layout.game);
     }
 }
