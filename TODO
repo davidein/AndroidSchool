@@ -1,0 +1,24 @@
+Milestone 1
+ * Display graphics
+ * Touch input
+ * Home screen
+  * Navigation to game
+
+
+Ideas:
+ ! Activity lifetime management (store state, restore state)
+ ! Proper screen scaling
+ ! Level finished screen
+ ! Restart button / hud
+ ! Menu graphics 
+ ! Car graphics
+ ! Score (moves, time)
+ * Options
+ * Remember current level
+ * High score
+ * More puzzles
+ * Online puzzles / puzzle downloading
+ * Device testing
+ * Level unlocking
+ * Sound effects? (crashing into other blocks)
+ * Particle effects? (finishing a level)
