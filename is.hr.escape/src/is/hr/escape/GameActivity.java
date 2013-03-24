@@ -1,8 +1,13 @@
 package is.hr.escape;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import is.hr.escape.helpers.Orientation;
@@ -29,10 +34,10 @@ public class GameActivity extends Activity implements GameHandler {
         logic = new GameLogic();
         setContentView(R.layout.game);
 
-        setup();
-
         drawView = (DrawView) findViewById(R.id.drawView);
         drawView.setGameHandler(this);
+
+        setup();
     }
 
     public List<Car> getCars() {
@@ -56,6 +61,26 @@ public class GameActivity extends Activity implements GameHandler {
         logic.makeAction(action);
         drawView.invalidate();
         updateMoves();
+        if(logic.isSolved()) {
+            drawView.disableTouch();
+            gameOver();
+        }
+    }
+
+    private void gameOver() {
+        DialogFragment fragment = new GameOverFragment(new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //Clicked quit
+                finish();
+            }
+        }, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //Clicked next
+                setup();
+            }
+        });
+        fragment.setCancelable(false);
+        fragment.show(getFragmentManager(), "derp");
     }
 
     private void updateMoves() {
@@ -111,6 +136,8 @@ public class GameActivity extends Activity implements GameHandler {
 
     private void setup() {
         logic.setup("(H 1 3 2), (V 0 0 2), (V 0 2 3), (H 0 5 2), (H 2 0 3), (H 4 1 2), (V 3 2 3), (V 5 3 3)");
+        drawView.enableTouch();
+        drawView.invalidate();
     }
 
     public void restart(View view) {

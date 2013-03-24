@@ -22,12 +22,14 @@ import java.util.List;
 public class DrawView extends View {
     GameHandler handler;
     Bitmap _woodTexture;
+    boolean _touchEnabled;
 
     private GhostCar _ghost = null;
 
     public DrawView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setBackgroundColor(Color.WHITE);
+        _touchEnabled = true;
 
         _woodTexture = BitmapFactory.decodeResource(getResources(), R.drawable.woodtexture);
     }
@@ -135,6 +137,9 @@ public class DrawView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if(!_touchEnabled) {
+            return false;
+        }
         int x = (int) event.getX();
         int y = (int) event.getY();
 
@@ -208,6 +213,14 @@ public class DrawView extends View {
         invalidate();
 
         return true;
+    }
+
+    public void disableTouch() {
+        _touchEnabled = false;
+    }
+
+    public void enableTouch() {
+        _touchEnabled = true;
     }
 
     /**
