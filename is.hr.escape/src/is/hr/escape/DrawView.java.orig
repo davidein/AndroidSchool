@@ -28,8 +28,12 @@ public class DrawView extends View {
 
     public DrawView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        //setBackgroundColor(Color.WHITE);
+<<<<<<< HEAD
+        setBackgroundColor(Color.WHITE);
         _touchEnabled = true;
+=======
+        //setBackgroundColor(Color.WHITE);
+>>>>>>> Small changes.
 
         _woodTexture = BitmapFactory.decodeResource(getResources(), R.drawable.woodtexture);
     }
@@ -210,7 +214,10 @@ public class DrawView extends View {
             case MotionEvent.ACTION_MOVE:
                 if(_ghost != null) {
                     Point newPos = new Point(x, y);
-                    _ghost.setPosition(newPos);
+                    if(_ghost.isWithinBounds(newPos)) {
+
+                        _ghost.setPosition(newPos);
+                    }
                 }
                 break;
             case MotionEvent.ACTION_CANCEL:
