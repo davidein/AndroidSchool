@@ -11,16 +11,24 @@
             android:orientation="horizontal"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent">
+        <Space
+                android:layout_width="wrap_content"
+                android:layout_height="20px"
+                android:id="@+id/space"
+                android:layout_weight="1" android:background="#CCCCCC"/>
         <TextView
             android:text="Moves: 0"
             android:id="@+id/moves"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
         <Button
             android:text="Restart"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:onClick="restart" />
+            android:onClick="restart"
+            android:layout_weight="1"
+                />
     </LinearLayout>
     <is.hr.escape.DrawView
         android:id="@+id/drawView"

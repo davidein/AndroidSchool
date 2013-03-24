@@ -89,9 +89,9 @@ public class DrawView extends View {
                 carRect.set((car.getCol())*baseWidth,(car.getRow())*baseHeight, (car.getCol()+1)*baseWidth,(car.getRow()+car.getLength())*baseHeight);
             }
 
-            canvas.drawRoundRect(carRect, 10, 10, carBasePainter);
+            canvas.drawRoundRect(carRect, 15, 15, carBasePainter);
             canvas.drawBitmap(_woodTexture, null, carRect, carWoodPainter);
-            canvas.drawRoundRect(carRect, 10, 10, carBorderPainter);
+            canvas.drawRoundRect(carRect, 15, 15, carBorderPainter);
         }
         //Draw the currently held car on its own
         if(ghostCar != null) {
@@ -108,10 +108,9 @@ public class DrawView extends View {
             {
                 carRect.set(_ghost.getX(), _ghost.getY(), _ghost.getX() + baseWidth, _ghost.getY() + (ghostCar.getLength())*baseHeight);
             }
-            //canvas.drawRect(carRect, carPainter);
-            canvas.drawRoundRect(carRect, 10, 10, carPainter);
+            canvas.drawRoundRect(carRect, 15, 15, carPainter);
             canvas.drawBitmap(_woodTexture, null, carRect, carWoodPainter);
-            canvas.drawRoundRect(carRect, 10, 10, carBorderPainter);
+            canvas.drawRoundRect(carRect, 15, 15, carBorderPainter);
         }
     }
 
@@ -140,9 +139,25 @@ public class DrawView extends View {
 
         canvas.drawRoundRect(canvasSpace, 10, 10, baseBorderPainter);      */
 
+        Paint base = new Paint();
+        base.setColor(Color.GREEN);
+        base.setAlpha(30);
+
+        int baseWidth = getWidth() / handler.getCols();
+        int baseHeight = getHeight() / handler.getRows();
+
+        RectF canvasSpace = new RectF((4)*baseWidth,(3)*baseHeight, (6) * baseWidth,(4)*baseHeight);
+        canvas.drawRoundRect(canvasSpace, 15, 15, base);
+
+        Paint baseText = new Paint();
+        baseText.setColor(Color.WHITE);
+        baseText.setTextSize(30);
+
+        canvas.drawText("Finish line", 4 * baseWidth + 50, 3 * baseHeight + 70, baseText);
+
         Paint linePainter = new Paint();
-        linePainter.setColor(Color.DKGRAY);
-        linePainter.setAlpha(50);
+        linePainter.setColor(Color.BLACK);
+        linePainter.setAlpha(200);
         for (int irow = 1;irow<handler.getRows();irow++)
         {
             canvas.drawLine(0, getHeight()/handler.getRows()*irow, getWidth(), getHeight()/handler.getRows()*irow, linePainter );
