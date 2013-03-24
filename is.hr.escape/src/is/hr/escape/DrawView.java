@@ -31,11 +31,6 @@ public class DrawView extends View {
         this.handler = handler;
     }
 
-    public void update() {
-        //TODO: underlying game state has changed, update the display
-        invalidate();
-    }
-
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -46,6 +41,7 @@ public class DrawView extends View {
         int baseHeight = getHeight() / handler.getRows();
 
         Car ghostCar = null;
+        //Draw all static cars
         for (Car car : handler.getCars())
         {
             if(_ghost != null && car.getId() ==_ghost.getId()) {
@@ -66,6 +62,7 @@ public class DrawView extends View {
             }
             canvas.drawRect(carRect, carPainter);
         }
+        //Draw the currently held car on its own
         if(ghostCar != null) {
             Paint carPainter = new Paint();
             carPainter.setColor(Color.GREEN);
@@ -82,6 +79,7 @@ public class DrawView extends View {
             canvas.drawRect(carRect, carPainter);
         }
     }
+
 
     private void drawGrid(Canvas canvas)
     {
@@ -169,11 +167,15 @@ public class DrawView extends View {
                 _ghost = null;
                 break;
         }
-        update();
+        invalidate();
 
         return true;
     }
 
+    /**
+     * Converts screen coordinates to grid coordinates
+     * @param round If set to true, grid coordinates will be rounded, otherwise simply floored
+     */
     private Point coordinatesToGrid(int x, int y, boolean round) {
         int col, row;
         int columnWidth = getWidth() / handler.getCols();
@@ -188,6 +190,9 @@ public class DrawView extends View {
         return new Point(col, row);
     }
 
+    /**
+     * Converts grid coordinates to screen coordinates
+     */
     private Point gridToCoordinates(int column, int row) {
         int x, y;
         int columnWidth = getWidth() / handler.getCols();
@@ -199,6 +204,12 @@ public class DrawView extends View {
         return new Point(x, y);
     }
 
+    /**
+     * Gets the car that's under the given screen coordinates or null if no car is located there
+     * @param x X screen coordinate
+     * @param y Y screen coordinate
+     * @return A car instance or null
+     */
     private Car getCar(int x, int y) {
         Point gridPoint = coordinatesToGrid(x, y, false);
 

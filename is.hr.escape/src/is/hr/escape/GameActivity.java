@@ -51,7 +51,7 @@ public class GameActivity extends Activity implements GameHandler {
 
     public void actionPerformed(Action action) {
         logic.makeAction(action);
-        drawView.update();
+        drawView.invalidate();
     }
 
     public int getRows() {
