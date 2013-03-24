@@ -89,6 +89,7 @@ public class GameLogic {
     public GameLogic(  ) {
         m_cars = new ArrayList<Car>();
         m_isSolved = false;
+        m_moveCount = 0;
     }
 
     /**
@@ -104,6 +105,7 @@ public class GameLogic {
     public boolean setup( List<Car> cars ) {
         m_cars.clear();
         m_isSolved = false;
+        m_moveCount = 0;
         for ( Car car : cars ) {
             if ( !canPlace( car ) ) {
                 return false;
@@ -211,6 +213,7 @@ public class GameLogic {
         if ( action.getId() == GOAL_CAR_ID ) {
             m_isSolved = doOverlap( car, m_goal );
         }
+        m_moveCount++;
     }
 
     /**
@@ -241,6 +244,14 @@ public class GameLogic {
      */
     public List<Car> getCars() {
         return Collections.unmodifiableList( m_cars );
+    }
+
+    public int getMoveCount() {
+        return m_moveCount;
+    }
+
+    public void setMoveCount(int count) {
+        m_moveCount = count;
     }
 
     /**
@@ -275,6 +286,7 @@ public class GameLogic {
     private final Car m_goal = new Car( Orientation.Horizontal, GOAL_COL, GOAL_ROW, 1 );
 
     private List<Car> m_cars;
+    private int       m_moveCount;
     private boolean   m_isSolved;
     private int[][]   m_grid = new int[_numCols][_numRows];
 

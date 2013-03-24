@@ -3,6 +3,8 @@ package is.hr.escape;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import is.hr.escape.helpers.Orientation;
 import is.hr.escape.logic.Action;
 import is.hr.escape.logic.GameLogic;
@@ -27,7 +29,7 @@ public class GameActivity extends Activity implements GameHandler {
         logic = new GameLogic();
         setContentView(R.layout.game);
 
-        logic.setup("(H 1 3 2), (V 0 0 2), (V 0 2 3), (H 0 5 2), (H 2 0 3), (H 4 1 2), (V 3 2 3), (V 5 3 3)");
+        setup();
 
         drawView = (DrawView) findViewById(R.id.drawView);
         drawView.setGameHandler(this);
@@ -53,6 +55,12 @@ public class GameActivity extends Activity implements GameHandler {
     public void actionPerformed(Action action) {
         logic.makeAction(action);
         drawView.invalidate();
+        updateMoves();
+    }
+
+    private void updateMoves() {
+        TextView moves = (TextView)findViewById(R.id.moves);
+        moves.setText("Moves: " + logic.getMoveCount());
     }
 
     public int getRows() {
@@ -67,6 +75,7 @@ public class GameActivity extends Activity implements GameHandler {
     public void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
         List<Car> cars = logic.getCars();
+        bundle.putInt("moveCount", logic.getMoveCount());
         bundle.putInt("carCount", cars.size());
         for(int i = 0; i < cars.size(); i++) {
             bundle.putInt("carid" + i, cars.get(i).getId());
@@ -81,6 +90,7 @@ public class GameActivity extends Activity implements GameHandler {
     public void onRestoreInstanceState(Bundle bundle) {
         super.onRestoreInstanceState(bundle);
         List<Car> cars = new ArrayList<Car>();
+        int moveCount = bundle.getInt("moveCount", 0);
         int count = bundle.getInt("carCount", 0);
         for(int i = 0; i < count; i++) {
             int col, row, len, id;
@@ -95,5 +105,17 @@ public class GameActivity extends Activity implements GameHandler {
             cars.add(car);
         }
         logic.setup(cars);
+        logic.setMoveCount(moveCount);
+        updateMoves();
+    }
+
+    private void setup() {
+        logic.setup("(H 1 3 2), (V 0 0 2), (V 0 2 3), (H 0 5 2), (H 2 0 3), (H 4 1 2), (V 3 2 3), (V 5 3 3)");
+    }
+
+    public void restart(View view) {
+        setup();
+        updateMoves();
+        drawView.invalidate();
     }
 }
