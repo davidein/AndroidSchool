@@ -21,12 +21,15 @@ import java.util.List;
  */
 public class DrawView extends View {
     GameHandler handler;
+    Bitmap _woodTexture;
 
     private GhostCar _ghost = null;
 
     public DrawView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setBackgroundColor(Color.WHITE);
+
+        _woodTexture = BitmapFactory.decodeResource(getResources(), R.drawable.woodtexture);
     }
     public void setGameHandler(GameHandler handler) {
         this.handler = handler;
@@ -49,10 +52,29 @@ public class DrawView extends View {
                 ghostCar = car;
                 continue;
             }
-            Paint carPainter = new Paint();
-            carPainter.setColor(Color.BLACK);
+            Paint carBasePainter = new Paint();
+            if (car.getId() == 0)
+            {
+                carBasePainter.setColor(Color.RED);
+            }
+            else
+            {
+                carBasePainter.setARGB(255, 248, 168, 45);
+            }
+            carBasePainter.setDither(true);                    // set the dither to true
+            carBasePainter.setStyle(Paint.Style.FILL);
+            carBasePainter.setAntiAlias(true);
 
-            Rect carRect = new Rect();
+            Paint carBorderPainter = new Paint();
+            carBorderPainter.setARGB(255, 87, 13, 0);
+            carBorderPainter.setStrokeWidth(1);               // set the size
+            carBorderPainter.setDither(true);                    // set the dither to true
+            carBorderPainter.setStyle(Paint.Style.STROKE);       // set to STOKE
+            carBorderPainter.setStrokeJoin(Paint.Join.ROUND);    // set the join to round you want
+            carBorderPainter.setStrokeCap(Paint.Cap.ROUND);      // set the paint cap to round too
+            carBorderPainter.setAntiAlias(true);
+
+            RectF carRect = new RectF();
             if (car.getOrientation() == Orientation.Horizontal)
             {
                 carRect.set((car.getCol())*baseWidth,(car.getRow())*baseHeight, (car.getCol()+car.getLength()) * baseWidth,(car.getRow()+1)*baseHeight);
@@ -61,12 +83,19 @@ public class DrawView extends View {
             {
                 carRect.set((car.getCol())*baseWidth,(car.getRow())*baseHeight, (car.getCol()+1)*baseWidth,(car.getRow()+car.getLength())*baseHeight);
             }
-            canvas.drawRect(carRect, carPainter);
+
+            Paint carWoodPainter = new Paint();
+            carWoodPainter.setAlpha(75);
+
+            canvas.drawRoundRect(carRect, 10, 10, carBasePainter);
+            canvas.drawBitmap(_woodTexture, null, carRect, carWoodPainter );
+            canvas.drawRoundRect(carRect, 10, 10, carBorderPainter);
         }
         //Draw the currently held car on its own
         if(ghostCar != null) {
             Paint carPainter = new Paint();
             carPainter.setColor(Color.GREEN);
+            carPainter.setAlpha(90);
 
             Rect carRect = new Rect();
             if (ghostCar.getOrientation() == Orientation.Horizontal)
@@ -85,7 +114,8 @@ public class DrawView extends View {
     private void drawGrid(Canvas canvas)
     {
         Paint linePainter = new Paint();
-        linePainter.setColor(Color.RED);
+        linePainter.setColor(Color.DKGRAY);
+        linePainter.setAlpha(50);
         for (int irow = 1;irow<handler.getRows();irow++)
         {
             canvas.drawLine(0, getHeight()/handler.getRows()*irow, getWidth(), getHeight()/handler.getRows()*irow, linePainter );
