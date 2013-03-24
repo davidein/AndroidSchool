@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 import is.hr.escape.helpers.Orientation;
 import is.hr.escape.logic.Action;
 import is.hr.escape.objects.Car;
@@ -93,6 +94,13 @@ public class DrawView extends View {
         {
             canvas.drawLine(getWidth()/handler.getCols() * icol, 0, getWidth()/handler.getCols() * icol, getHeight(), linePainter );
         }
+    }
+
+    @Override
+    public void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        int min = w < h ? w : h;
+        setLayoutParams(new LinearLayout.LayoutParams(min, min));
     }
 
     @Override
