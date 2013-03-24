@@ -3,6 +3,7 @@ package is.hr.escape;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import is.hr.escape.helpers.Orientation;
 import is.hr.escape.logic.Action;
 import is.hr.escape.logic.GameLogic;
 import is.hr.escape.objects.Car;
@@ -60,5 +61,39 @@ public class GameActivity extends Activity implements GameHandler {
 
     public int getCols() {
         return logic.get_numCols();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+        List<Car> cars = logic.getCars();
+        bundle.putInt("carCount", cars.size());
+        for(int i = 0; i < cars.size(); i++) {
+            bundle.putInt("carid" + i, cars.get(i).getId());
+            bundle.putInt("carcol" + i, cars.get(i).getCol());
+            bundle.putInt("carrow" + i, cars.get(i).getRow());
+            bundle.putBoolean("carvert" + i, cars.get(i).getOrientation() == Orientation.Vertical);
+            bundle.putInt("carlen" + i, cars.get(i).getLength());
+        }
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle bundle) {
+        super.onRestoreInstanceState(bundle);
+        List<Car> cars = new ArrayList<Car>();
+        int count = bundle.getInt("carCount", 0);
+        for(int i = 0; i < count; i++) {
+            int col, row, len, id;
+            Orientation o;
+            id = bundle.getInt("carid" + i, 0);
+            col = bundle.getInt("carcol" + i, 0);
+            row = bundle.getInt("carrow" + i, 0);
+            len = bundle.getInt("carlen" + i, 0);
+            o = bundle.getBoolean("carvert" + i, false) ? Orientation.Vertical : Orientation.Horizontal;
+            Car car = new Car(o, col, row, len);
+            car.setId(id);
+            cars.add(car);
+        }
+        logic.setup(cars);
     }
 }
