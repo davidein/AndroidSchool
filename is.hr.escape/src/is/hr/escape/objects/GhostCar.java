@@ -43,18 +43,19 @@ public class GhostCar {
     public void setPosition(Point newPos) {
         if(orientation == Orientation.Vertical) {
             y = newPos.y + offset.y;
+            if(y < bounds.top) {
+                y = bounds.top;
+            } else if (y > bounds.bottom) {
+                y = bounds.bottom;
+            }
         } else {
             x = newPos.x + offset.x;
+            if(x < bounds.left) {
+                x = bounds.left;
+            } else if(x > bounds.right) {
+                x = bounds.right;
+            }
         }
     }
 
-    public boolean isWithinBounds(Point pos) {
-        pos = new Point(pos.x + offset.x, pos.y + offset.y);
-
-        if(orientation == Orientation.Vertical) {
-            return pos.y >= bounds.top && pos.y <= bounds.bottom;
-        } else {
-            return pos.x >= bounds.left && pos.x <= bounds.right;
-        }
-    }
 }

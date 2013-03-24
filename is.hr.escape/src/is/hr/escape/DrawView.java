@@ -185,10 +185,7 @@ public class DrawView extends View {
             case MotionEvent.ACTION_MOVE:
                 if(_ghost != null) {
                     Point newPos = new Point(x, y);
-                    if(_ghost.isWithinBounds(newPos)) {
-
-                        _ghost.setPosition(newPos);
-                    }
+                    _ghost.setPosition(newPos);
                 }
                 break;
             case MotionEvent.ACTION_CANCEL:
