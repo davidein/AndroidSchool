@@ -3,10 +3,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent" android:padding="10dp" >
     <TextView
         android:text="You win!"
         android:layout_height="wrap_content"
-        android:layout_width="fill_parent" />
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:textSize="25dp"
+            />
+
+    <TextView
+        android:text="Moves: 0"
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:textSize="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="15dp"
+            />
 
 </LinearLayout>
