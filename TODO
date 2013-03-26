@@ -1,23 +1,30 @@
 Milestone 1
- * Display graphics
- * Touch input
- * Home screen
-  * Navigation to game
+ x Display graphics
+ x Touch input
+ x Home screen
+  x Navigation to game
 
-
-Ideas:
- ! Activity lifetime management (store state, restore state)
- ! Proper screen scaling
- ! Level finished screen
- ! Restart button / hud
- ! Menu graphics 
- ! Car graphics
- ! Score (moves, time)
- * Options
+Milestone 2
+ * Activity lifetime management (store state, restore state)
+ x Proper screen scaling
+ * Level finished functionality
+ x Hud functionality
+ * Score (moves, time)
  * Remember current level
  * High score
- * More puzzles
+ * Level select screen
+
+Milestone 3
+ * Options
  * Online puzzles / puzzle downloading
+
+Polish
+ * Hud graphics
+ * Menu graphics 
+ x Game graphics
+ * Level finished graphics
+
+Ideas:
  * Device testing
  * Level unlocking
  * Sound effects? (crashing into other blocks)
