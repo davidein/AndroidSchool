@@ -19,6 +19,8 @@ public class SQLHelper extends SQLiteOpenHelper {
     private static final String SCORE_TABLE_CREATE =
                 "CREATE TABLE " + SCORE_TABLE_NAME + " ( level INT ,moves INT, timetaken INT);";
 
+    private SQLiteDatabase _db;
+
     public SQLHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -28,11 +30,19 @@ public class SQLHelper extends SQLiteOpenHelper {
         db.execSQL(SCORE_TABLE_CREATE);
     }
 
+    @Override
+    protected void finalize() throws Throwable {
+        if (_db != null && _db.isOpen())
+            _db.close();
+
+        super.finalize();
+    }
+
     public int getScore(Integer level)
     {
-        SQLiteDatabase db = this.getWritableDatabase();
+        _db = this.getWritableDatabase();
 
-        Cursor cursor = db.query(SCORE_TABLE_NAME, new String[] {"moves"}, "level = ?", new String[] {level.toString()}, "", "", "");
+        Cursor cursor = _db.query(SCORE_TABLE_NAME, new String[] {"moves"}, "level = ?", new String[] {level.toString()}, "", "", "");
 
         int score = -1;
 
@@ -52,9 +62,9 @@ public class SQLHelper extends SQLiteOpenHelper {
 
     public boolean saveScore(Integer level, int moves, int timetaken)
     {
-        SQLiteDatabase db = this.getWritableDatabase();
+        _db = this.getWritableDatabase();
 
-        Cursor cursor = db.query(SCORE_TABLE_NAME, new String[] {"moves"}, "level = ?", new String[] {level.toString()}, "", "", "");
+        Cursor cursor = _db.query(SCORE_TABLE_NAME, new String[] {"moves"}, "level = ?", new String[] {level.toString()}, "", "", "");
 
         int score = -1;
 
@@ -71,7 +81,7 @@ public class SQLHelper extends SQLiteOpenHelper {
             cv.put("moves", moves);
             cv.put("timetaken", timetaken);
 
-            return db.insert(SCORE_TABLE_NAME, null, cv) > 0;
+            return _db.insert(SCORE_TABLE_NAME, null, cv) > 0;
         }
         else if (score > moves)
         {
@@ -79,8 +89,9 @@ public class SQLHelper extends SQLiteOpenHelper {
             cv.put("moves", moves);
             cv.put("timetaken", timetaken);
 
-            return db.update(SCORE_TABLE_NAME, cv, "level = ?", new String[] {level.toString()} ) > 0 ;
+            return _db.update(SCORE_TABLE_NAME, cv, "level = ?", new String[] {level.toString()} ) > 0 ;
         }
+
         return false;
     }
 

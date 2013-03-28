@@ -26,4 +26,9 @@ public class MenuActivity extends Activity {
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
     }
+
+    public void quitClick(View view)
+    {
+        this.finish();
+    }
 }

@@ -1,9 +1,7 @@
 package is.hr.escape.objects;
 
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
+import android.graphics.*;
+import is.hr.escape.R;
 import is.hr.escape.helpers.Orientation;
 
 /**
@@ -17,6 +15,7 @@ public class Car {
     private int m_col;
     private int m_row;
     private int m_length;
+    private boolean m_isghost = false;
 
     public Car( Orientation orientation, int col, int row, int length ) {
         m_orientation = orientation;
@@ -45,6 +44,16 @@ public class Car {
 
     public int getLength() { return m_length; }
 
+    public boolean get_isGhost()
+    {
+        return m_isghost;
+    }
+
+    public void set_isGhost(boolean ghostCheck)
+    {
+        m_isghost = ghostCheck;
+    }
+
     public void slide( int offset ) {
         if ( getOrientation() == Orientation.Horizontal ) {
             m_col += offset;
@@ -52,6 +61,45 @@ public class Car {
         else {
             m_row += offset;
         }
+    }
+
+    public void Draw(Canvas canvas, RectF carRect, Bitmap texture)
+    {
+        Paint carBorderPainter = new Paint();
+        carBorderPainter.setARGB(255, 87, 13, 0);
+        carBorderPainter.setStrokeWidth(1);               // set the size
+        carBorderPainter.setDither(true);                    // set the dither to true
+        carBorderPainter.setStyle(Paint.Style.STROKE);       // set to STOKE
+        carBorderPainter.setStrokeJoin(Paint.Join.ROUND);    // set the join to round you want
+        carBorderPainter.setStrokeCap(Paint.Cap.ROUND);      // set the paint cap to round too
+        carBorderPainter.setAntiAlias(true);
+
+        Paint carWoodPainter = new Paint();
+        carWoodPainter.setAlpha(75);
+
+        Paint carBasePainter = new Paint();
+        if (getId() == 0)
+        {
+            carBasePainter.setColor(Color.RED);
+        }
+        else
+        {
+            carBasePainter.setARGB(255, 248, 168, 45);
+        }
+
+        if (get_isGhost())
+        {
+            carBasePainter.setColor(Color.GREEN);
+            carBasePainter.setAlpha(90);
+        }
+
+        carBasePainter.setDither(true);                    // set the dither to true
+        carBasePainter.setStyle(Paint.Style.FILL);
+        carBasePainter.setAntiAlias(true);
+
+        canvas.drawRoundRect(carRect, 15, 15, carBasePainter);
+        canvas.drawBitmap(texture, null, carRect, carWoodPainter);
+        canvas.drawRoundRect(carRect, 15, 15, carBorderPainter);
     }
 
     public String toString( ) {

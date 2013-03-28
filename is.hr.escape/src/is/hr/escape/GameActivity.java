@@ -84,7 +84,7 @@ public class GameActivity extends Activity implements GameHandler {
                 //Clicked next
                 setup();
             }
-        }, sqlHelper.getScore(currentLevel));
+        }, logic.getMoveCount());
         fragment.setCancelable(false);
 
         fragment.show(getFragmentManager(), "derp");

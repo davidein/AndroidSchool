@@ -3,32 +3,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+            android:background="@drawable/chrometexture"
+        >
+
+    <ImageView android:src="@drawable/hr" android:layout_width="fill_parent" android:layout_height="200dp" />
+
     <Button android:id="@+id/start"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:onClick="buttonClick"
-            android:text="Play" />
-    <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" android:baselineAligned="false" android:measureWithLargestChild="false"
-            >
-        <Space
-                android:layout_width="wrap_content"
-                android:layout_height="20px"
-                android:id="@+id/space1" android:layout_weight="1"/>
-        <TextView
-                android:layout_width="wrap_content"
+            android:text="Play"
+            android:textSize="22dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center" android:background="@drawable/default_button"/>
+
+    <Button android:id="@+id/quit"
                 android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/textView" android:textColor="#ff554e"
-                android:textAlignment="center" android:autoText="false" android:layout_gravity="center"/>
-        <Space
                 android:layout_width="wrap_content"
-                android:layout_height="20px"
-                android:id="@+id/space" android:layout_weight="1"/>
-    </LinearLayout>
+                android:onClick="quitClick"
+                android:text="Quit"
+                android:textSize="22dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center" android:background="@drawable/default_button"/>
 
 
 </LinearLayout>
