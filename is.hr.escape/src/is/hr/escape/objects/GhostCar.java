@@ -1,7 +1,6 @@
 package is.hr.escape.objects;
 
-import android.graphics.Point;
-import android.graphics.Rect;
+import android.graphics.*;
 import android.util.Log;
 import is.hr.escape.helpers.Orientation;
 
@@ -56,6 +55,29 @@ public class GhostCar {
                 x = bounds.right;
             }
         }
+    }
+
+    public void Draw(Canvas canvas, RectF carRect, Bitmap texture)
+    {
+        Paint carBorderPainter = new Paint();
+        carBorderPainter.setARGB(255, 87, 13, 0);
+        carBorderPainter.setStrokeWidth(1);               // set the size
+        carBorderPainter.setDither(true);                    // set the dither to true
+        carBorderPainter.setStyle(Paint.Style.STROKE);       // set to STOKE
+        carBorderPainter.setStrokeJoin(Paint.Join.ROUND);    // set the join to round you want
+        carBorderPainter.setStrokeCap(Paint.Cap.ROUND);      // set the paint cap to round too
+        carBorderPainter.setAntiAlias(true);
+
+        Paint carPainter = new Paint();
+        carPainter.setColor(Color.GREEN);
+        carPainter.setAlpha(90);
+
+        Paint carWoodPainter = new Paint();
+        carWoodPainter.setAlpha(75);
+
+        canvas.drawRoundRect(carRect, 15, 15, carPainter);
+        canvas.drawBitmap(texture, null, carRect, carWoodPainter);
+        canvas.drawRoundRect(carRect, 15, 15, carBorderPainter);
     }
 
 }

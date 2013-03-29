@@ -28,7 +28,6 @@ public class DrawView extends View {
 
     public DrawView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        //setBackgroundColor(Color.WHITE);
         _touchEnabled = true;
 
         _woodTexture = BitmapFactory.decodeResource(getResources(), R.drawable.woodtexture);
@@ -46,38 +45,15 @@ public class DrawView extends View {
         int baseWidth = getWidth() / handler.getCols();
         int baseHeight = getHeight() / handler.getRows();
 
-        Paint carBorderPainter = new Paint();
-        carBorderPainter.setARGB(255, 87, 13, 0);
-        carBorderPainter.setStrokeWidth(1);               // set the size
-        carBorderPainter.setDither(true);                    // set the dither to true
-        carBorderPainter.setStyle(Paint.Style.STROKE);       // set to STOKE
-        carBorderPainter.setStrokeJoin(Paint.Join.ROUND);    // set the join to round you want
-        carBorderPainter.setStrokeCap(Paint.Cap.ROUND);      // set the paint cap to round too
-        carBorderPainter.setAntiAlias(true);
-
-        Paint carWoodPainter = new Paint();
-        carWoodPainter.setAlpha(75);
-
         Car ghostCar = null;
         //Draw all static cars
         for (Car car : handler.getCars())
         {
             if(_ghost != null && car.getId() ==_ghost.getId()) {
                 ghostCar = car;
+                car.set_isGhost(true);
                 continue;
             }
-            Paint carBasePainter = new Paint();
-            if (car.getId() == 0)
-            {
-                carBasePainter.setColor(Color.RED);
-            }
-            else
-            {
-                carBasePainter.setARGB(255, 248, 168, 45);
-            }
-            carBasePainter.setDither(true);                    // set the dither to true
-            carBasePainter.setStyle(Paint.Style.FILL);
-            carBasePainter.setAntiAlias(true);
 
             RectF carRect = new RectF();
             if (car.getOrientation() == Orientation.Horizontal)
@@ -89,16 +65,10 @@ public class DrawView extends View {
                 carRect.set((car.getCol())*baseWidth,(car.getRow())*baseHeight, (car.getCol()+1)*baseWidth,(car.getRow()+car.getLength())*baseHeight);
             }
 
-            canvas.drawRoundRect(carRect, 10, 10, carBasePainter);
-            canvas.drawBitmap(_woodTexture, null, carRect, carWoodPainter);
-            canvas.drawRoundRect(carRect, 10, 10, carBorderPainter);
+            car.Draw(canvas, carRect, _woodTexture);
         }
         //Draw the currently held car on its own
         if(ghostCar != null) {
-            Paint carPainter = new Paint();
-            carPainter.setColor(Color.GREEN);
-            carPainter.setAlpha(90);
-
             RectF carRect = new RectF();
             if (ghostCar.getOrientation() == Orientation.Horizontal)
             {
@@ -108,41 +78,33 @@ public class DrawView extends View {
             {
                 carRect.set(_ghost.getX(), _ghost.getY(), _ghost.getX() + baseWidth, _ghost.getY() + (ghostCar.getLength())*baseHeight);
             }
-            //canvas.drawRect(carRect, carPainter);
-            canvas.drawRoundRect(carRect, 10, 10, carPainter);
-            canvas.drawBitmap(_woodTexture, null, carRect, carWoodPainter);
-            canvas.drawRoundRect(carRect, 10, 10, carBorderPainter);
+            ghostCar.Draw(canvas, carRect, _woodTexture);
+            ghostCar.set_isGhost(false);
         }
     }
 
 
     private void drawBase(Canvas canvas)
     {
-        /*RectF canvasSpace = new RectF(0, 0, getWidth(), getHeight());
-
         Paint base = new Paint();
-        base.setColor(Color.WHITE);
-        base.setAlpha(200);
-        //base.setMaskFilter(new EmbossMaskFilter(new float[] { 1, 1, 1 },0.4f, 10, 8.2f));
+        base.setColor(Color.GREEN);
+        base.setAlpha(30);
 
-        canvas.drawRoundRect(canvasSpace, 10, 10, base);
+        int baseWidth = getWidth() / handler.getCols();
+        int baseHeight = getHeight() / handler.getRows();
 
-        Paint baseBorderPainter = new Paint();
-        baseBorderPainter.setARGB(255, 0, 0, 0);
-        baseBorderPainter.setStrokeWidth(1);               // set the size
-        baseBorderPainter.setDither(true);                    // set the dither to true
-        baseBorderPainter.setStyle(Paint.Style.STROKE);       // set to STOKE
-        baseBorderPainter.setStrokeJoin(Paint.Join.ROUND);    // set the join to round you want
-        baseBorderPainter.setStrokeCap(Paint.Cap.ROUND);      // set the paint cap to round too
-        baseBorderPainter.setAntiAlias(true);
+        RectF canvasSpace = new RectF((4)*baseWidth,(3)*baseHeight, (6) * baseWidth,(4)*baseHeight);
+        canvas.drawRoundRect(canvasSpace, 15, 15, base);
 
-        //baseBorderPainter.setMaskFilter( new EmbossMaskFilter(new float[] { 1, 1, 1 }, 0.4f, 6, 3.5f));
+        Paint baseText = new Paint();
+        baseText.setColor(Color.WHITE);
+        baseText.setTextSize(30);
 
-        canvas.drawRoundRect(canvasSpace, 10, 10, baseBorderPainter);      */
+        canvas.drawText("Finish line", 4 * baseWidth + 50, 3 * baseHeight + 70, baseText);
 
         Paint linePainter = new Paint();
-        linePainter.setColor(Color.DKGRAY);
-        linePainter.setAlpha(50);
+        linePainter.setColor(Color.BLACK);
+        linePainter.setAlpha(200);
         for (int irow = 1;irow<handler.getRows();irow++)
         {
             canvas.drawLine(0, getHeight()/handler.getRows()*irow, getWidth(), getHeight()/handler.getRows()*irow, linePainter );

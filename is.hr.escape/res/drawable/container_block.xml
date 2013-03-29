@@ -3,11 +3,10 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Background -->
-
-
     <item>
         <shape>
-            <solid android:color="#30000000" />
+            <stroke android:color="#FF570D00" />
+
             <corners android:radius="8dp" />
         </shape>
 

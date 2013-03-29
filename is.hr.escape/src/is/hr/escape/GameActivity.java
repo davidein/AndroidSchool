@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import is.hr.escape.helpers.Orientation;
+import is.hr.escape.helpers.SQLHelper;
 import is.hr.escape.logic.Action;
 import is.hr.escape.logic.GameLogic;
 import is.hr.escape.objects.Car;
@@ -68,6 +69,11 @@ public class GameActivity extends Activity implements GameHandler {
     }
 
     private void gameOver() {
+        int currentLevel = 1;
+        SQLHelper sqlHelper = new SQLHelper(getBaseContext());
+
+        sqlHelper.saveScore(currentLevel, logic.getMoveCount(), 1);
+
         DialogFragment fragment = new GameOverFragment(new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 //Clicked quit
@@ -78,8 +84,9 @@ public class GameActivity extends Activity implements GameHandler {
                 //Clicked next
                 setup();
             }
-        });
+        }, logic.getMoveCount());
         fragment.setCancelable(false);
+
         fragment.show(getFragmentManager(), "derp");
     }
 
