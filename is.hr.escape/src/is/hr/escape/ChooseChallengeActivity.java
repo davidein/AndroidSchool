@@ -2,6 +2,7 @@ package is.hr.escape;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -51,12 +52,12 @@ public class ChooseChallengeActivity extends FragmentActivity {
         public SliderPageAdapter(FragmentManager fm) {
             super(fm);
 
-            int fIndex = 0;
             int lIndex = 1;
             LevelSelectFragment currentFragment = null;
-            for(String challenge : LevelHelper.getInstance().getChallenges()) {
+
+            for(String challenge : LevelHelper.getInstance(getAssets()).getChallenges()) {
                 lIndex = 1;
-                List<Level> levels = LevelHelper.getInstance().getLevels(challenge);
+                List<Level> levels = LevelHelper.getInstance(getAssets()).getLevels(challenge);
                 for(Level level : levels) {
                     if(currentFragment == null) {
                         currentFragment = new LevelSelectFragment(challenge);
@@ -67,14 +68,12 @@ public class ChooseChallengeActivity extends FragmentActivity {
                     if(currentFragment.getLevelCount() >= levelsPerFragment) {
                         fragments.add(currentFragment);
                         currentFragment = null;
-                        fIndex++;
                     }
                     lIndex++;
                 }
                 if(currentFragment != null) {
                     fragments.add(currentFragment);
                     currentFragment = null;
-                    fIndex++;
                 }
             }
         }
