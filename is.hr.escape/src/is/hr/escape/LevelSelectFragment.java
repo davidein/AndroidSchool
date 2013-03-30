@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import is.hr.escape.helpers.Level;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,17 +47,7 @@ public class LevelSelectFragment extends Fragment {
         adapter.addLevel(new Level(levelIndex, levelId, level));
     }
 
-    private class Level{
-        public int index;
-        public String levelId;
-        public String level;
 
-        public Level(int i, String id, String level) {
-            index = i;
-            levelId = id;
-            this.level = level;
-        }
-    }
 
     private class LevelAdapter extends BaseAdapter {
         private List<Level> levels = new ArrayList<Level>();
