@@ -92,7 +92,7 @@ public class GameActivity extends Activity implements GameHandler {
 
     private void updateMoves() {
         TextView moves = (TextView)findViewById(R.id.moves);
-        moves.setText("Moves: " + logic.getMoveCount());
+        moves.setText(String.valueOf(logic.getMoveCount()));
     }
 
     public int getRows() {
