@@ -23,7 +23,7 @@ public class MenuActivity extends Activity {
     }
 
     public void buttonClick(View view) {
-        Intent intent = new Intent(this, GameActivity.class);
+        Intent intent = new Intent(this, ChooseChallengeActivity.class);
         startActivity(intent);
     }
 
