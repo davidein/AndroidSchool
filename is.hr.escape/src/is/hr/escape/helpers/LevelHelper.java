@@ -15,12 +15,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: heidar
- * Date: 3/30/13
- * Time: 6:24 PM
+ * User: Heiðar Þórðarson
+ * Interface to load levels. Singleton
  */
-//Singleton
 public class LevelHelper {
     private static LevelHelper instance;
     private static AssetManager assets;
@@ -42,6 +39,10 @@ public class LevelHelper {
         loadChallenges();
     }
 
+    /**
+     * Loads the challenge list by parsing the challengelist xml file and stores the challenge names and
+     * their associated xml files in memory
+     */
     private void loadChallenges() {
         Document dom;
         try {
@@ -73,23 +74,69 @@ public class LevelHelper {
         }
     }
 
+    /**
+     * Loads all levels for a given challenge by parsing the associated xml file and stores them in memory
+     * @param challenge Name of the challenge for which to load levels
+     */
     private void loadChallenge(String challenge) {
-        String file = challengeMap.get(challenge);
-        //load levels
-
-
-        //Dummy loading
+        /*
+            Expects document to have the format
+            <challenge>
+                <id>x</id>
+                <name>xxx</name>
+                <puzzle id="x">
+                    <setup>...</setup>
+                </puzzle>
+                <puzzle id="x">
+                ...
+            </challenge>
+         */
         List<Level> levels = new ArrayList<Level>();
-        for(int i = 0; i < 11; i++) {
-            levels.add(new Level(i, String.valueOf(i), "(H 1 3 2), (V 0 0 2), (V 0 2 3), (H 0 5 2), (H 2 0 3), (H 4 1 2), (V 3 2 3), (V 5 3 3)"));
+        String file = challengeMap.get(challenge);
+        Document dom;
+        try {
+            DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            dom = db.parse(assets.open(file));
+        } catch(Exception e) {
+            throw new RuntimeException(e);
         }
+        Element root = dom.getDocumentElement();
+        NodeList puzzleList = root.getElementsByTagName("puzzle");
+        //Iterate through all puzzle elements
+        for(int i = 0; i < puzzleList.getLength(); i++) {
+            Node puzzle = puzzleList.item(i);
+            String id = puzzle.getAttributes().getNamedItem("id").getNodeValue();
+            String levelString = null;
+
+            NodeList children = puzzle.getChildNodes();
+            //Have to iterate through the children since it's parsing empty newlines between <puzzle> and <setup> as nodes
+            for(int j = 0; j < children.getLength(); j++) {
+                Node child = children.item(j);
+                if(child.getNodeName().equalsIgnoreCase("setup")) {
+                    levelString = child.getFirstChild().getNodeValue();
+                }
+            }
+            if(levelString != null) {
+                Level level = new Level(i, id, levelString);
+                levels.add(level);
+            }
+        }
+
         levelMap.put(challenge, levels);
     }
 
+    /**
+     * @return A list of all available challenges (set of levels)
+     */
     public List<String> getChallenges() {
         return challenges;
     }
 
+    /**
+     * Gets all levels of a given challenge
+     * @param challenge The challenge to which the levels belong
+     * @return A list of levels belonging to challenge
+     */
     public List<Level> getLevels(String challenge) {
         if(!levelMap.containsKey(challenge)) {
             loadChallenge(challenge);
