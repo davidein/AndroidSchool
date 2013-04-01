@@ -145,7 +145,6 @@ public class GameActivity extends Activity implements GameHandler {
     }
 
     private void setup() {
-        Log.e("level", currentLevel);
         logic.setup(currentLevel);
         drawView.enableTouch();
         drawView.invalidate();
