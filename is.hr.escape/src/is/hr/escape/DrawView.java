@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import is.hr.escape.helpers.Orientation;
 import is.hr.escape.logic.Action;
 import is.hr.escape.objects.Car;
@@ -58,11 +59,11 @@ public class DrawView extends View {
             RectF carRect = new RectF();
             if (car.getOrientation() == Orientation.Horizontal)
             {
-                carRect.set((car.getCol())*baseWidth,(car.getRow())*baseHeight, (car.getCol()+car.getLength()) * baseWidth,(car.getRow()+1)*baseHeight);
+                carRect.set((car.getCol())*baseWidth+1,(car.getRow())*baseHeight+1, (car.getCol()+car.getLength()) * baseWidth,(car.getRow()+1)*baseHeight);
             }
             else
             {
-                carRect.set((car.getCol())*baseWidth,(car.getRow())*baseHeight, (car.getCol()+1)*baseWidth,(car.getRow()+car.getLength())*baseHeight);
+                carRect.set((car.getCol())*baseWidth+1,(car.getRow())*baseHeight+1, (car.getCol()+1)*baseWidth,(car.getRow()+car.getLength())*baseHeight);
             }
 
             car.Draw(canvas, carRect, _woodTexture);
@@ -119,7 +120,14 @@ public class DrawView extends View {
     public void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         int min = w < h ? w : h;
-        setLayoutParams(new LinearLayout.LayoutParams(min, min));
+        //if (w > h)
+        //{
+        //    setLayoutParams(new RelativeLayout.LayoutParams(min, min));
+        //}
+        //else
+        //{
+            setLayoutParams(new LinearLayout.LayoutParams(min, min));
+        //}
     }
 
     @Override

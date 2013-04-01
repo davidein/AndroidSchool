@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
             android:background="@drawable/chrometexture"
         >
 
-    <ImageView android:src="@drawable/hr" android:layout_width="fill_parent" android:layout_height="200dp" />
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_centerVertical="true"
+        >
+
+    <ImageView android:src="@drawable/hr" android:layout_width="fill_parent" android:layout_height="wrap_content"
+               android:adjustViewBounds="true" android:maxHeight="200dp"/>
 
     <Button android:id="@+id/start"
             android:layout_height="wrap_content"
@@ -19,8 +28,9 @@
             android:paddingRight="20dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center" android:background="@drawable/default_button"/>
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center" android:background="@drawable/default_button"
+            android:layout_marginBottom="5dp"/>
 
     <Button android:id="@+id/quit"
                 android:layout_height="wrap_content"
@@ -32,8 +42,11 @@
                 android:paddingRight="20dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:layout_marginTop="20dp"
-                android:layout_gravity="center" android:background="@drawable/default_button"/>
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center" android:background="@drawable/default_button"
+                android:layout_marginBottom="5dp"/>
 
 
 </LinearLayout>
+
+</RelativeLayout>
