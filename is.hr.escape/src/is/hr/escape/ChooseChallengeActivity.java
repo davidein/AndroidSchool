@@ -1,18 +1,13 @@
 package is.hr.escape;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
+import is.hr.escape.helpers.Challenge;
 import is.hr.escape.helpers.Level;
 import is.hr.escape.helpers.LevelHelper;
 
@@ -28,12 +23,46 @@ public class ChooseChallengeActivity extends FragmentActivity {
     private ViewPager pager;
     private SliderPageAdapter adapter;
 
+    private final int levelsPerFragment = 9;
+    private Map<Integer, String> fragmentMap = new HashMap<Integer, String>();
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.choose);
         pager = (ViewPager)findViewById(R.id.pager);
-        adapter = new SliderPageAdapter(getSupportFragmentManager());
+        adapter = new SliderPageAdapter(getLayoutInflater());
         pager.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+        for(Challenge challenge : LevelHelper.getInstance(getBaseContext()).getChallenges()) {
+            List<Level> levels = LevelHelper.getInstance(getBaseContext()).getLevels(challenge);
+            List<Level> fragmentLevels = null;
+            for(Level level : levels) {
+                if(fragmentLevels == null) {
+                    fragmentLevels = new ArrayList<Level>();
+                }
+
+                fragmentLevels.add(level);
+
+                if(fragmentLevels.size() >= levelsPerFragment) {
+                    adapter.addPage(challenge, fragmentLevels);
+
+                    fragmentLevels = null;
+                }
+            }
+            if(fragmentLevels != null) {
+                adapter.addPage(challenge, fragmentLevels);
+            }
+        }
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.e("derp", "stop");
+        adapter = null;
+        pager.setAdapter(null);
     }
 
     public void levelClick(View view) {
@@ -42,50 +71,5 @@ public class ChooseChallengeActivity extends FragmentActivity {
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("level", level);
         startActivity(intent);
-    }
-
-    private class SliderPageAdapter extends FragmentStatePagerAdapter {
-
-        List<LevelSelectFragment> fragments = new ArrayList<LevelSelectFragment>();
-        int levelsPerFragment = 9;
-
-        public SliderPageAdapter(FragmentManager fm) {
-            super(fm);
-
-            int lIndex = 1;
-            LevelSelectFragment currentFragment = null;
-
-            for(String challenge : LevelHelper.getInstance(getAssets()).getChallenges()) {
-                lIndex = 1;
-                List<Level> levels = LevelHelper.getInstance(getAssets()).getLevels(challenge);
-                for(Level level : levels) {
-                    if(currentFragment == null) {
-                        currentFragment = new LevelSelectFragment(challenge);
-                    }
-
-                    currentFragment.addLevel(lIndex, level.levelId, level.level);
-
-                    if(currentFragment.getLevelCount() >= levelsPerFragment) {
-                        fragments.add(currentFragment);
-                        currentFragment = null;
-                    }
-                    lIndex++;
-                }
-                if(currentFragment != null) {
-                    fragments.add(currentFragment);
-                    currentFragment = null;
-                }
-            }
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return fragments.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return fragments.size();
-        }
     }
 }

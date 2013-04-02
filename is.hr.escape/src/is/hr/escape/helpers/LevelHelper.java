@@ -1,5 +1,6 @@
 package is.hr.escape.helpers;
 
+import android.content.Context;
 import android.content.res.AssetManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -20,115 +21,53 @@ import java.util.Map;
  */
 public class LevelHelper {
     private static LevelHelper instance;
-    private static AssetManager assets;
 
-    public static LevelHelper getInstance(AssetManager assets) {
+    public static LevelHelper getInstance(Context context) {
         if(instance == null) {
-            instance = new LevelHelper(assets);
+            instance = new LevelHelper(context);
         }
         return instance;
     }
-    private List<String> challenges = new ArrayList<String>();
-    //Maps from challenge name to challenge xml file
-    private Map<String, String> challengeMap = new HashMap<String, String>();
+    private List<Challenge> challenges = new ArrayList<Challenge>();
+
     //Maps from challenge name to a list of its levels
     private Map<String, List<Level>> levelMap = new HashMap<String, List<Level>>();
 
-    private LevelHelper(AssetManager assets) {
-        this.assets = assets;
+    private SQLHelper sqlHelper;
+
+    private LevelHelper(Context context) {
+        sqlHelper = new SQLHelper(context);
         loadChallenges();
     }
 
     /**
-     * Loads the challenge list by parsing the challengelist xml file and stores the challenge names and
-     * their associated xml files in memory
+     * Loads the challenge list from databse using sqlHelper
      */
     private void loadChallenges() {
-        Document dom;
-        try {
-            DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            dom = db.parse(assets.open("challengelist.xml"));
-        }catch(Exception e) {
-            throw new RuntimeException(e);
-        }
-        Element root = dom.getDocumentElement();
-        NodeList challengeList = root.getElementsByTagName("challenge");
-        String name = null;
-        String file = null;
-        for(int i = 0; i < challengeList.getLength(); i++) {
-            Node challengeNode = challengeList.item(i);
-            NodeList properties = challengeNode.getChildNodes();
-            for(int j = 0; j < properties.getLength(); j++) {
-                Node property = properties.item(j);
-                String pName = property.getNodeName();
-                if(pName.equalsIgnoreCase("name")) {
-                    name = property.getFirstChild().getNodeValue();
-                } else if(pName.equalsIgnoreCase("puzzles")) {
-                    file = property.getFirstChild().getNodeValue();
-                }
-            }
-            if(name != null && file != null) {
-                challenges.add(name);
-                challengeMap.put(name, file);
-            }
-        }
+        challenges = sqlHelper.getAllChallenges();
     }
 
     /**
-     * Loads all levels for a given challenge by parsing the associated xml file and stores them in memory
+     * Loads all levels for a given challenge from database using sqlHelper
      * @param challenge Name of the challenge for which to load levels
      */
     private void loadChallenge(String challenge) {
-        /*
-            Expects document to have the format
-            <challenge>
-                <id>x</id>
-                <name>xxx</name>
-                <puzzle id="x">
-                    <setup>...</setup>
-                </puzzle>
-                <puzzle id="x">
-                ...
-            </challenge>
-         */
-        List<Level> levels = new ArrayList<Level>();
-        String file = challengeMap.get(challenge);
-        Document dom;
-        try {
-            DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            dom = db.parse(assets.open(file));
-        } catch(Exception e) {
-            throw new RuntimeException(e);
-        }
-        Element root = dom.getDocumentElement();
-        NodeList puzzleList = root.getElementsByTagName("puzzle");
-        //Iterate through all puzzle elements
-        for(int i = 0; i < puzzleList.getLength(); i++) {
-            Node puzzle = puzzleList.item(i);
-            String id = puzzle.getAttributes().getNamedItem("id").getNodeValue();
-            String levelString = null;
-
-            NodeList children = puzzle.getChildNodes();
-            //Have to iterate through the children since it's parsing empty newlines between <puzzle> and <setup> as nodes
-            for(int j = 0; j < children.getLength(); j++) {
-                Node child = children.item(j);
-                if(child.getNodeName().equalsIgnoreCase("setup")) {
-                    levelString = child.getFirstChild().getNodeValue();
-                }
-            }
-            if(levelString != null) {
-                Level level = new Level(i, id, levelString);
-                levels.add(level);
+        List<Level> levels = null;
+        for(Challenge c : challenges) {
+            if(c.name.equals(challenge)) {
+                levels = sqlHelper.getChallengeLevels(c);
+                break;
             }
         }
-
-        levelMap.put(challenge, levels);
+        if(levels != null) {
+            levelMap.put(challenge, levels);
+        }
     }
 
     /**
      * @return A list of all available challenges (set of levels)
      */
-    public List<String> getChallenges() {
+    public List<Challenge> getChallenges() {
         return challenges;
     }
 
@@ -137,10 +76,10 @@ public class LevelHelper {
      * @param challenge The challenge to which the levels belong
      * @return A list of levels belonging to challenge
      */
-    public List<Level> getLevels(String challenge) {
-        if(!levelMap.containsKey(challenge)) {
-            loadChallenge(challenge);
+    public List<Level> getLevels(Challenge challenge) {
+        if(!levelMap.containsKey(challenge.name)) {
+            loadChallenge(challenge.name);
         }
-        return levelMap.get(challenge);
+        return levelMap.get(challenge.name);
     }
 }
