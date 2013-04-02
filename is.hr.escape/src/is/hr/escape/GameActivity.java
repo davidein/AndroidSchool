@@ -30,6 +30,8 @@ public class GameActivity extends Activity implements GameHandler {
     private GameLogic logic;
     private DrawView drawView;
     private String currentLevel;
+    private int levelId;
+    private int challengeId;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,8 @@ public class GameActivity extends Activity implements GameHandler {
         drawView.setGameHandler(this);
 
         currentLevel = getIntent().getStringExtra("level");
+        levelId = getIntent().getIntExtra("levelId", 0);
+        challengeId = getIntent().getIntExtra("challengeId", 0);
 
         setup();
     }
@@ -72,11 +76,9 @@ public class GameActivity extends Activity implements GameHandler {
     }
 
     private void gameOver() {
-        int currentLevel = 1;
         SQLHelper sqlHelper = new SQLHelper(getBaseContext());
 
-        //TODO: needs access to current challenge
-        sqlHelper.saveScore(1, currentLevel, logic.getMoveCount());
+        sqlHelper.saveScore(challengeId, levelId, logic.getMoveCount());
 
         DialogFragment fragment = new GameOverFragment(new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
