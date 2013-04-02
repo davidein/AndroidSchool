@@ -6,7 +6,7 @@
     android:layout_margin="10dp"
     android:id="@+id/btn"
     android:onClick="levelClick"
-    android:orientation="horizontal"
+    android:orientation="vertical"
         >
 
     <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/level_txt" />
