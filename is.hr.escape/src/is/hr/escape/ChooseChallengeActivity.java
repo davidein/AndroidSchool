@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import is.hr.escape.helpers.Challenge;
 import is.hr.escape.helpers.Level;
-import is.hr.escape.helpers.LevelHelper;
+import is.hr.escape.helpers.XMLHelper;
 
 import java.util.*;
 
@@ -34,8 +34,8 @@ public class ChooseChallengeActivity extends FragmentActivity {
         pager.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
-        for(Challenge challenge : LevelHelper.getInstance(getBaseContext()).getChallenges()) {
-            List<Level> levels = LevelHelper.getInstance(getBaseContext()).getLevels(challenge);
+        for(Challenge challenge : XMLHelper.getInstance(getBaseContext()).getChallenges()) {
+            List<Level> levels = XMLHelper.getInstance(getBaseContext()).getLevels(challenge);
             List<Level> fragmentLevels = null;
             for(Level level : levels) {
                 if(fragmentLevels == null) {
