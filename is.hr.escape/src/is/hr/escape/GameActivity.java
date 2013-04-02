@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import is.hr.escape.helpers.Level;
 import is.hr.escape.helpers.Orientation;
 import is.hr.escape.helpers.SQLHelper;
 import is.hr.escape.logic.Action;
@@ -88,6 +89,11 @@ public class GameActivity extends Activity implements GameHandler {
         }, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 //Clicked next
+                SQLHelper sqlHelper = new SQLHelper(getBaseContext());
+                Level level = sqlHelper.getNextLevel(challengeId, levelId);
+                currentLevel = level.level;
+                levelId = level.levelId;
+                challengeId = level.challengeId;
                 setup();
             }
         }, logic.getMoveCount());
