@@ -71,6 +71,48 @@ public class SQLHelper extends SQLiteOpenHelper {
         }
     }
 
+    public Level getNextLevel(int challengeId, int levelId)
+    {
+        _db = this.getReadableDatabase();
+
+        Level level = null;
+
+        Cursor cursor = _db.query(LEVEL_TABLE_NAME, new String[] {"ch_id", "l_id, setup"}, "ch_id = ? and l_id = ?", new String[] {String.valueOf(challengeId), String.valueOf(levelId+1)}, "", "", "" );
+
+        while (cursor.moveToNext())
+        {
+            int challengeIdentityColumnIndex = cursor.getColumnIndex("l_id");
+            int identityColumnIndex = cursor.getColumnIndex("l_id");
+            int setupColumnIndex = cursor.getColumnIndex("setup");
+
+            int challengeIdentity = cursor.getInt(challengeIdentityColumnIndex);
+            int identity = cursor.getInt(identityColumnIndex);
+            String setup = cursor.getString(setupColumnIndex);
+
+            level = new Level(challengeIdentity, identity, setup);
+        }
+
+        if (level == null)
+        {
+            Cursor secondaryCursor = _db.query(LEVEL_TABLE_NAME, new String[] {"ch_id", "l_id, setup"}, "ch_id = ? and l_id = ?", new String[] {String.valueOf(challengeId+1), "1"}, "", "", "" );
+
+            while (secondaryCursor.moveToNext())
+            {
+                int challengeIdentityColumnIndex = secondaryCursor.getColumnIndex("l_id");
+                int identityColumnIndex = secondaryCursor.getColumnIndex("l_id");
+                int setupColumnIndex = secondaryCursor.getColumnIndex("setup");
+
+                int challengeIdentity = secondaryCursor.getInt(challengeIdentityColumnIndex);
+                int identity = secondaryCursor.getInt(identityColumnIndex);
+                String setup = secondaryCursor.getString(setupColumnIndex);
+
+                level = new Level(challengeIdentity, identity, setup);
+            }
+        }
+
+        return level;
+    }
+
     public int getScore(int challenge, int level)
     {
         _db = this.getWritableDatabase();
