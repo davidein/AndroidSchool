@@ -75,7 +75,8 @@ public class GameActivity extends Activity implements GameHandler {
         int currentLevel = 1;
         SQLHelper sqlHelper = new SQLHelper(getBaseContext());
 
-        sqlHelper.saveScore(currentLevel, logic.getMoveCount(), 1);
+        //TODO: needs access to current challenge
+        sqlHelper.saveScore(1, currentLevel, logic.getMoveCount());
 
         DialogFragment fragment = new GameOverFragment(new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
