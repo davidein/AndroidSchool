@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <Button
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/btn"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:onClick="levelClick"
-            android:textSize="22dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center" android:background="@drawable/default_button"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:id="@+id/btn"
+    android:onClick="levelClick"
+        >
+
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/level" />
+
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/levelScore" />
+
+</LinearLayout>

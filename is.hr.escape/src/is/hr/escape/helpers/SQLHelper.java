@@ -19,8 +19,14 @@ public class SQLHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "escape";
     private static final int DATABASE_VERSION = 2;
     private static final String SCORE_TABLE_NAME = "score";
+    private static final String CHALLENGE_TABLE_NAME = "challenge";
+    private static final String LEVEL_TABLE_NAME = "level";
     private static final String SCORE_TABLE_CREATE =
-                "CREATE TABLE " + SCORE_TABLE_NAME + " ( level INT ,moves INT, timetaken INT);";
+                "CREATE TABLE " + SCORE_TABLE_NAME + " (ch_id INT, l_id INT, moves INT, PRIMARY KEY(ch_id, l_id), FOREIGN KEY(ch_id) REFERENCES challenge(ch_id), FOREIGN KEY(l_id) REFERENCES level(l_id));";
+    private static final String CHALLENGE_TABLE_CREATE =
+                "CREATE TABLE " + CHALLENGE_TABLE_NAME + " (ch_id INT PRIMARY KEY, name TEXT, path TEXT);";
+    private static final String LEVEL_TABLE_CREATE =
+                "CREATE TABLE " + LEVEL_TABLE_NAME + " (ch_id INT, l_id INT, setup TEXT, PRIMARY KEY(ch_id, l_id), FOREIGN KEY(ch_id) REFERENCES challenge(ch_id));";
 
     private SQLiteDatabase _db;
 
@@ -30,6 +36,8 @@ public class SQLHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL(CHALLENGE_TABLE_CREATE);
+        db.execSQL(LEVEL_TABLE_CREATE);
         db.execSQL(SCORE_TABLE_CREATE);
     }
 
@@ -45,7 +53,7 @@ public class SQLHelper extends SQLiteOpenHelper {
     {
         _db = this.getWritableDatabase();
 
-        Cursor cursor = _db.query(SCORE_TABLE_NAME, new String[] {"moves"}, "level = ?", new String[] {level.toString()}, "", "", "");
+        Cursor cursor = _db.query(SCORE_TABLE_NAME, new String[] {"moves"}, "l_id = ?", new String[] {level.toString()}, "", "", "");
 
         int score = -1;
 
@@ -63,11 +71,11 @@ public class SQLHelper extends SQLiteOpenHelper {
         return score;
     }
 
-    public boolean saveScore(Integer level, int moves, int timetaken)
+    public boolean saveScore(Integer challenge, Integer level, int moves)
     {
         _db = this.getWritableDatabase();
 
-        Cursor cursor = _db.query(SCORE_TABLE_NAME, new String[] {"moves"}, "level = ?", new String[] {level.toString()}, "", "", "");
+        Cursor cursor = _db.query(SCORE_TABLE_NAME, new String[] {"moves"}, "ch_id = ?, l_id = ?", new String[] {challenge.toString(), level.toString()}, "", "", "");
 
         int score = -1;
 
@@ -80,9 +88,9 @@ public class SQLHelper extends SQLiteOpenHelper {
         if (score == -1)
         {
             ContentValues cv = new ContentValues();
-            cv.put("level", level);
+            cv.put("ch_id", challenge);
+            cv.put("l_id", level);
             cv.put("moves", moves);
-            cv.put("timetaken", timetaken);
 
             return _db.insert(SCORE_TABLE_NAME, null, cv) > 0;
         }
@@ -90,13 +98,61 @@ public class SQLHelper extends SQLiteOpenHelper {
         {
             ContentValues cv = new ContentValues();
             cv.put("moves", moves);
-            cv.put("timetaken", timetaken);
 
-            return _db.update(SCORE_TABLE_NAME, cv, "level = ?", new String[] {level.toString()} ) > 0 ;
+            return _db.update(SCORE_TABLE_NAME, cv, "ch_id = ?, l_id = ?", new String[] {challenge.toString(), level.toString()} ) > 0 ;
         }
 
         return false;
     }
+
+    public List<Challenge> getAllChallenges()
+    {
+        _db = this.getReadableDatabase();
+
+        Cursor cursor = _db.query(CHALLENGE_TABLE_NAME, new String[] {"ch_id, name, path"}, "", new String[] {}, "", "", "" );
+
+        ArrayList<Challenge> challengeList = new ArrayList<Challenge>();
+
+        while (cursor.moveToNext())
+        {
+            int identityColumnIndex = cursor.getColumnIndex("ch_id");
+            int nameColumnIndex = cursor.getColumnIndex("name");
+            int pathColumnIndex = cursor.getColumnIndex("path");
+
+            int identity = cursor.getInt(identityColumnIndex);
+            String name = cursor.getString(nameColumnIndex);
+            String path = cursor.getString(pathColumnIndex);
+
+            Challenge challenge = new Challenge(identity, name, path);
+            challengeList.add(challenge);
+        }
+
+        return challengeList;
+    }
+
+    public List<Level> getChallengeLevels(Challenge challenge)
+    {
+        _db = this.getReadableDatabase();
+
+        Cursor cursor = _db.query(LEVEL_TABLE_NAME, new String[] {"l_id, setup"}, "", new String[] {}, "", "", "" );
+
+        ArrayList<Level> levelList = new ArrayList<Level>();
+
+        while (cursor.moveToNext())
+        {
+            int identityColumnIndex = cursor.getColumnIndex("ch_id");
+            int setupColumnIndex = cursor.getColumnIndex("setup");
+
+            int identity = cursor.getInt(identityColumnIndex);
+            String setup = cursor.getString(setupColumnIndex);
+
+            Level level = new Level(identity, setup);
+            levelList.add(level);
+        }
+
+        return  levelList;
+    }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

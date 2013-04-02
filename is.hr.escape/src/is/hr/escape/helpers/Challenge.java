@@ -9,9 +9,11 @@ package is.hr.escape.helpers;
 public class Challenge {
     public final int id;
     public final String name;
+    public final String path;
 
-    public Challenge(int id, String name) {
+    public Challenge(int id, String name, String path) {
         this.id = id;
         this.name = name;
+        this.path = path;
     }
 }
