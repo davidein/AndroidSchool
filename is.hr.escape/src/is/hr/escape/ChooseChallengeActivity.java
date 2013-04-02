@@ -62,15 +62,13 @@ public class ChooseChallengeActivity extends FragmentActivity {
 
     @Override
     public void onStop() {
-        super.onStop();
-        Log.e("derp", "stop");
+        super.onStop(); 
         adapter = null;
         pager.setAdapter(null);
     }
 
     public void levelClick(View view) {
-        Button btn = (Button)view;
-        String level = (String)btn.getTag();
+        String level = (String)view.getTag();
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("level", level);
         startActivity(intent);

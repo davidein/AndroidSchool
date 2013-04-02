@@ -111,7 +111,7 @@ public class SliderPageAdapter extends PagerAdapter {
             TextView levelTxt = (TextView) linearLayout.findViewById(R.id.level_txt);
             TextView levelScoreTxt = (TextView) linearLayout.findViewById(R.id.levelScore_txt);
 
-            levelTxt.setText(level.levelId);
+            levelTxt.setText(String.valueOf(level.levelId));
 
             //button.setText(String.valueOf(level.levelId));
             //button.setTag(level.level);
