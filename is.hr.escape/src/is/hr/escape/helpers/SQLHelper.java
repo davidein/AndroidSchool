@@ -63,9 +63,9 @@ public class SQLHelper extends SQLiteOpenHelper {
         {
 
             ContentValues levelcv = new ContentValues();
-            cv.put("ch_id", challenge.id);
-            cv.put("l_id", level.levelId);
-            cv.put("setup", level.level);
+            levelcv.put("ch_id", challenge.id);
+            levelcv.put("l_id", level.levelId);
+            levelcv.put("setup", level.level);
 
             _db.insert(LEVEL_TABLE_NAME, null, levelcv);
         }
@@ -131,7 +131,7 @@ public class SQLHelper extends SQLiteOpenHelper {
     {
         _db = this.getReadableDatabase();
 
-        Cursor cursor = _db.query(CHALLENGE_TABLE_NAME, new String[] {"ch_id, name, path"}, "", new String[] {}, "", "", "" );
+        Cursor cursor = _db.query(CHALLENGE_TABLE_NAME, new String[] {"ch_id, name"}, "", new String[] {}, "", "", "" );
 
         ArrayList<Challenge> challengeList = new ArrayList<Challenge>();
 
@@ -160,7 +160,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 
         while (cursor.moveToNext())
         {
-            int identityColumnIndex = cursor.getColumnIndex("ch_id");
+            int identityColumnIndex = cursor.getColumnIndex("l_id");
             int setupColumnIndex = cursor.getColumnIndex("setup");
 
             int identity = cursor.getInt(identityColumnIndex);

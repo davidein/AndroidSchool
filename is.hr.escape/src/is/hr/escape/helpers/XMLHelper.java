@@ -19,7 +19,7 @@ import java.util.Map;
  * User: Heiðar Þórðarson
  */
 public class XMLHelper {
-    private static String CHALLENGE_LIST_XML_PATH = "challengeList.xml";
+    private static String CHALLENGE_LIST_XML_PATH = "challengelist.xml";
     private static String CHALLENGE_TAG = "challenge";
     private static String CHALLENGE_NAME_TAG = "name";
     private static String CHALLENGE_XML_PATH_TAG = "puzzles";
