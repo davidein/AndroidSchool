@@ -95,6 +95,7 @@ public class GameActivity extends Activity implements GameHandler {
                 levelId = level.levelId;
                 challengeId = level.challengeId;
                 setup();
+                updateMoves();
             }
         }, logic.getMoveCount());
         fragment.setCancelable(false);

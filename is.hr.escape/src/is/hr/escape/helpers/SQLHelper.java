@@ -81,7 +81,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 
         while (cursor.moveToNext())
         {
-            int challengeIdentityColumnIndex = cursor.getColumnIndex("l_id");
+            int challengeIdentityColumnIndex = cursor.getColumnIndex("ch_id");
             int identityColumnIndex = cursor.getColumnIndex("l_id");
             int setupColumnIndex = cursor.getColumnIndex("setup");
 
@@ -98,7 +98,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 
             while (secondaryCursor.moveToNext())
             {
-                int challengeIdentityColumnIndex = secondaryCursor.getColumnIndex("l_id");
+                int challengeIdentityColumnIndex = secondaryCursor.getColumnIndex("ch_id");
                 int identityColumnIndex = secondaryCursor.getColumnIndex("l_id");
                 int setupColumnIndex = secondaryCursor.getColumnIndex("setup");
 

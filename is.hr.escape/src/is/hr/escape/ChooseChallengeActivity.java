@@ -50,12 +50,13 @@ public class ChooseChallengeActivity extends FragmentActivity {
                 }
 
                 fragmentLevels.add(level);
-
+                /*
                 if(fragmentLevels.size() >= levelsPerFragment) {
                     adapter.addPage(challenge, fragmentLevels);
 
                     fragmentLevels = null;
                 }
+                */
             }
             if(fragmentLevels != null) {
                 adapter.addPage(challenge, fragmentLevels);
