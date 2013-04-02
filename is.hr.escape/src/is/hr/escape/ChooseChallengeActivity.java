@@ -30,10 +30,14 @@ public class ChooseChallengeActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.choose);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         pager = (ViewPager)findViewById(R.id.pager);
         adapter = new SliderPageAdapter(getLayoutInflater());
         pager.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
 
         SQLHelper helper = new SQLHelper(getBaseContext());
 
@@ -57,12 +61,11 @@ public class ChooseChallengeActivity extends FragmentActivity {
                 adapter.addPage(challenge, fragmentLevels);
             }
         }
-
     }
 
     @Override
     public void onStop() {
-        super.onStop(); 
+        super.onStop();
         adapter = null;
         pager.setAdapter(null);
     }
