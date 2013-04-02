@@ -8,10 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.TextView;
+import android.widget.*;
 import is.hr.escape.helpers.Challenge;
 import is.hr.escape.helpers.Level;
 
@@ -101,16 +98,24 @@ public class SliderPageAdapter extends PagerAdapter {
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
-            Button button;
+            LinearLayout linearLayout;
             if(convertView == null) {
-                button = (Button)inflater.inflate(R.layout.level, null);
+                linearLayout = (LinearLayout)inflater.inflate(R.layout.level, null);
             } else {
-                button = (Button)convertView;
+                linearLayout = (LinearLayout)convertView;
             }
             Level level = levels.get(position);
-            button.setText(String.valueOf(level.levelId));
-            button.setTag(level.level);
-            return button;
+
+            linearLayout.setTag(level.level);
+
+            TextView levelTxt = (TextView) linearLayout.findViewById(R.id.level_txt);
+            TextView levelScoreTxt = (TextView) linearLayout.findViewById(R.id.levelScore_txt);
+
+            levelTxt.setText(level.levelId);
+
+            //button.setText(String.valueOf(level.levelId));
+            //button.setTag(level.level);
+            return linearLayout;
         }
     }
 }
