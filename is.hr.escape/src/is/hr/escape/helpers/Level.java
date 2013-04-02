@@ -9,12 +9,12 @@ package is.hr.escape.helpers;
  */
 public class Level {
     public final int index;
-    public final String levelId;
+    public final int levelId;
     public final String level;
 
-    public Level(int i, String id, String level) {
-        index = i;
+    public Level(int id, String level) {
         levelId = id;
         this.level = level;
+        index = id;
     }
 }

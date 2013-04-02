@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -103,6 +104,55 @@ public class SQLHelper extends SQLiteOpenHelper {
 
         return false;
     }
+
+    public List<Challenge> getAllChallenges()
+    {
+        _db = this.getReadableDatabase();
+
+        Cursor cursor = _db.query(CHALLENGE_TABLE_NAME, new String[] {"ch_id, name, path"}, "", new String[] {}, "", "", "" );
+
+        ArrayList<Challenge> challengeList = new ArrayList<Challenge>();
+
+        while (cursor.moveToNext())
+        {
+            int identityColumnIndex = cursor.getColumnIndex("ch_id");
+            int nameColumnIndex = cursor.getColumnIndex("name");
+            int pathColumnIndex = cursor.getColumnIndex("path");
+
+            int identity = cursor.getInt(identityColumnIndex);
+            String name = cursor.getString(nameColumnIndex);
+            String path = cursor.getString(pathColumnIndex);
+
+            Challenge challenge = new Challenge(identity, name, path);
+            challengeList.add(challenge);
+        }
+
+        return challengeList;
+    }
+
+    public List<Level> getChallengeLevels(Challenge challenge)
+    {
+        _db = this.getReadableDatabase();
+
+        Cursor cursor = _db.query(LEVEL_TABLE_NAME, new String[] {"l_id, setup"}, "", new String[] {}, "", "", "" );
+
+        ArrayList<Level> levelList = new ArrayList<Level>();
+
+        while (cursor.moveToNext())
+        {
+            int identityColumnIndex = cursor.getColumnIndex("ch_id");
+            int setupColumnIndex = cursor.getColumnIndex("setup");
+
+            int identity = cursor.getInt(identityColumnIndex);
+            String setup = cursor.getString(setupColumnIndex);
+
+            Level level = new Level(identity, setup);
+            levelList.add(level);
+        }
+
+        return  levelList;
+    }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
