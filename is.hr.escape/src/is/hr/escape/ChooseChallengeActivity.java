@@ -71,9 +71,11 @@ public class ChooseChallengeActivity extends FragmentActivity {
     }
 
     public void levelClick(View view) {
-        String level = (String)view.getTag();
+        Level level = (Level)view.getTag();
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra("level", level);
+        intent.putExtra("level", level.level);
+        intent.putExtra("levelId", level.levelId);
+        intent.putExtra("challengeId", level.challengeId);
         startActivity(intent);
     }
 }
