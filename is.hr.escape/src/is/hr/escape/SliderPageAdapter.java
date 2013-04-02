@@ -43,7 +43,7 @@ public class SliderPageAdapter extends PagerAdapter {
         LevelAdapter adapter = new LevelAdapter(inflater, item.levels);
         grid.setAdapter(adapter);
         viewMap.put(item.challenge.name, root);
-        return item.challenge.name;
+        return root;
     }
 
     @Override
@@ -62,8 +62,7 @@ public class SliderPageAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        TextView label = (TextView)view.findViewById(R.id.difficulty);
-        return label.getText().toString().equals(object);
+        return view == object;
     }
 
     private class Item {

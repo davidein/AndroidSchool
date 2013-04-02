@@ -4,6 +4,10 @@
         <name>Beginners</name>
         <puzzles>beginners.xml</puzzles>
     </challenge>
+    <challenge>
+        <name>Classics</name>
+        <puzzles>classics.xml</puzzles>
+    </challenge>
     <!--
     <challenge>
         <name>Intermediate</name>

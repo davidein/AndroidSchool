@@ -75,7 +75,7 @@ public class SQLHelper extends SQLiteOpenHelper {
     {
         _db = this.getWritableDatabase();
 
-        Cursor cursor = _db.query(SCORE_TABLE_NAME, new String[] {"moves"}, "ch_id = ?, l_id = ?", new String[] {String.valueOf(challenge), String.valueOf(level)}, "", "", "");
+        Cursor cursor = _db.query(SCORE_TABLE_NAME, new String[] {"moves"}, "ch_id = ? and l_id = ?", new String[] {String.valueOf(challenge), String.valueOf(level)}, "", "", "");
 
         int score = -1;
 
@@ -97,7 +97,7 @@ public class SQLHelper extends SQLiteOpenHelper {
     {
         _db = this.getWritableDatabase();
 
-        Cursor cursor = _db.query(SCORE_TABLE_NAME, new String[] {"moves"}, "ch_id = ?, l_id = ?", new String[] {challenge.toString(), level.toString()}, "", "", "");
+        Cursor cursor = _db.query(SCORE_TABLE_NAME, new String[] {"moves"}, "ch_id = ? and l_id = ?", new String[] {challenge.toString(), level.toString()}, "", "", "");
 
         int score = -1;
 
@@ -121,7 +121,7 @@ public class SQLHelper extends SQLiteOpenHelper {
             ContentValues cv = new ContentValues();
             cv.put("moves", moves);
 
-            return _db.update(SCORE_TABLE_NAME, cv, "ch_id = ?, l_id = ?", new String[] {challenge.toString(), level.toString()} ) > 0 ;
+            return _db.update(SCORE_TABLE_NAME, cv, "ch_id = ? and l_id = ?", new String[] {challenge.toString(), level.toString()} ) > 0 ;
         }
 
         return false;
