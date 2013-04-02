@@ -131,7 +131,7 @@ public class SQLHelper extends SQLiteOpenHelper {
     {
         _db = this.getReadableDatabase();
 
-        Cursor cursor = _db.query(CHALLENGE_TABLE_NAME, new String[] {"ch_id, name"}, "", new String[] {}, "", "", "" );
+        Cursor cursor = _db.query(CHALLENGE_TABLE_NAME, new String[] {"ch_id, name"}, "", new String[] {}, "", "", "ch_id" );
 
         ArrayList<Challenge> challengeList = new ArrayList<Challenge>();
 
@@ -154,7 +154,7 @@ public class SQLHelper extends SQLiteOpenHelper {
     {
         _db = this.getReadableDatabase();
 
-        Cursor cursor = _db.query(LEVEL_TABLE_NAME, new String[] {"l_id, setup"}, "ch_id = ?", new String[] {String.valueOf(challenge.id)}, "", "", "" );
+        Cursor cursor = _db.query(LEVEL_TABLE_NAME, new String[] {"l_id, setup"}, "ch_id = ?", new String[] {String.valueOf(challenge.id)}, "", "", "l_id" );
 
         ArrayList<Level> levelList = new ArrayList<Level>();
 
