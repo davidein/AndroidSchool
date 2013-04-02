@@ -24,7 +24,7 @@ public class SQLHelper extends SQLiteOpenHelper {
     private static final String SCORE_TABLE_CREATE =
                 "CREATE TABLE " + SCORE_TABLE_NAME + " (ch_id INT, l_id INT, moves INT, PRIMARY KEY(ch_id, l_id), FOREIGN KEY(ch_id) REFERENCES challenge(ch_id), FOREIGN KEY(l_id) REFERENCES level(l_id));";
     private static final String CHALLENGE_TABLE_CREATE =
-                "CREATE TABLE " + CHALLENGE_TABLE_NAME + " (ch_id INT PRIMARY KEY, name TEXT, path TEXT);";
+                "CREATE TABLE " + CHALLENGE_TABLE_NAME + " (ch_id INT PRIMARY KEY, name TEXT);";
     private static final String LEVEL_TABLE_CREATE =
                 "CREATE TABLE " + LEVEL_TABLE_NAME + " (ch_id INT, l_id INT, setup TEXT, PRIMARY KEY(ch_id, l_id), FOREIGN KEY(ch_id) REFERENCES challenge(ch_id));";
 
@@ -47,6 +47,28 @@ public class SQLHelper extends SQLiteOpenHelper {
             _db.close();
 
         super.finalize();
+    }
+
+    public void populateChallenge(Challenge challenge, List<Level> levelList)
+    {
+        _db = this.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put("ch_id", challenge.id);
+        cv.put("name", challenge.name);
+
+        _db.insert(CHALLENGE_TABLE_NAME, null, cv);
+
+        for (Level level : levelList)
+        {
+
+            ContentValues levelcv = new ContentValues();
+            cv.put("ch_id", challenge.id);
+            cv.put("l_id", level.levelId);
+            cv.put("setup", level.level);
+
+            _db.insert(LEVEL_TABLE_NAME, null, levelcv);
+        }
     }
 
     public int getScore(Integer level)
@@ -117,13 +139,11 @@ public class SQLHelper extends SQLiteOpenHelper {
         {
             int identityColumnIndex = cursor.getColumnIndex("ch_id");
             int nameColumnIndex = cursor.getColumnIndex("name");
-            int pathColumnIndex = cursor.getColumnIndex("path");
 
             int identity = cursor.getInt(identityColumnIndex);
             String name = cursor.getString(nameColumnIndex);
-            String path = cursor.getString(pathColumnIndex);
 
-            Challenge challenge = new Challenge(identity, name, path);
+            Challenge challenge = new Challenge(identity, name);
             challengeList.add(challenge);
         }
 
