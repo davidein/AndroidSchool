@@ -71,11 +71,11 @@ public class SQLHelper extends SQLiteOpenHelper {
         }
     }
 
-    public int getScore(Integer level)
+    public int getScore(int challenge, int level)
     {
         _db = this.getWritableDatabase();
 
-        Cursor cursor = _db.query(SCORE_TABLE_NAME, new String[] {"moves"}, "l_id = ?", new String[] {level.toString()}, "", "", "");
+        Cursor cursor = _db.query(SCORE_TABLE_NAME, new String[] {"moves"}, "ch_id = ?, l_id = ?", new String[] {String.valueOf(challenge), String.valueOf(level)}, "", "", "");
 
         int score = -1;
 
@@ -154,7 +154,7 @@ public class SQLHelper extends SQLiteOpenHelper {
     {
         _db = this.getReadableDatabase();
 
-        Cursor cursor = _db.query(LEVEL_TABLE_NAME, new String[] {"l_id, setup"}, "", new String[] {}, "", "", "" );
+        Cursor cursor = _db.query(LEVEL_TABLE_NAME, new String[] {"l_id, setup"}, "ch_id = ?", new String[] {String.valueOf(challenge.id)}, "", "", "" );
 
         ArrayList<Level> levelList = new ArrayList<Level>();
 
@@ -166,7 +166,7 @@ public class SQLHelper extends SQLiteOpenHelper {
             int identity = cursor.getInt(identityColumnIndex);
             String setup = cursor.getString(setupColumnIndex);
 
-            Level level = new Level(identity, setup);
+            Level level = new Level(challenge.id, identity, setup);
             levelList.add(level);
         }
 

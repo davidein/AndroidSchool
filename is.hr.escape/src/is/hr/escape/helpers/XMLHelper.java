@@ -111,7 +111,7 @@ public class XMLHelper {
                 }
             }
             if(levelString != null && idStr != null) {
-                Level level = new Level(Integer.valueOf(idStr), levelString);
+                Level level = new Level(Integer.valueOf(cId), Integer.valueOf(idStr), levelString);
                 levels.add(level);
             }
         }

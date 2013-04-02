@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import is.hr.escape.helpers.Challenge;
 import is.hr.escape.helpers.Level;
+import is.hr.escape.helpers.SQLHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,10 +80,12 @@ public class SliderPageAdapter extends PagerAdapter {
     private class LevelAdapter extends BaseAdapter {
         private LayoutInflater inflater;
         private List<Level> levels;
+        private SQLHelper sqlHelper;
 
         public LevelAdapter(LayoutInflater inflater, List<Level> levels) {
             this.inflater = inflater;
             this.levels = levels;
+            sqlHelper = new SQLHelper(inflater.getContext());
         }
 
         public int getCount() {
@@ -113,6 +116,16 @@ public class SliderPageAdapter extends PagerAdapter {
 
             levelTxt.setText(String.valueOf(level.levelId));
 
+            int score = sqlHelper.getScore(level.challengeId, level.levelId);
+
+            if (score == 0)
+            {
+                levelScoreTxt.setText("No score!");
+            }
+            else
+            {
+                levelScoreTxt.setText(String.format("High score: %d", score));
+            }
             //button.setText(String.valueOf(level.levelId));
             //button.setTag(level.level);
             return linearLayout;

@@ -8,10 +8,12 @@ package is.hr.escape.helpers;
  * To change this template use File | Settings | File Templates.
  */
 public class Level {
+    public final int challengeId;
     public final int levelId;
     public final String level;
 
-    public Level(int id, String level) {
+    public Level(int challengeId, int id, String level) {
+        this.challengeId = challengeId;
         levelId = id;
         this.level = level;
     }
