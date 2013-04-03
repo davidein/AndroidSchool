@@ -123,10 +123,8 @@ public class SliderPageAdapter extends PagerAdapter {
             }
             else
             {
-                levelScoreTxt.setText(String.format("High score: %d", score));
+                levelScoreTxt.setText(String.format("Highscore: %d", score));
             }
-            //button.setText(String.valueOf(level.levelId));
-            //button.setTag(level.level);
             return linearLayout;
         }
     }
