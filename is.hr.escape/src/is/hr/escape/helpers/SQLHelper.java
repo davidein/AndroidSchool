@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: David Einarsson
- * Date: 26.3.2013
- * Time: 17:16
+ * The SQLHelper provides helper functions to access data from the sqlite database.
+ * It creates the required tables the first time the application is run and provides ways to
+ * populate initial data.
  */
 public class SQLHelper extends SQLiteOpenHelper {
 
@@ -27,7 +27,7 @@ public class SQLHelper extends SQLiteOpenHelper {
     private static final String LEVEL_TABLE_CREATE =
                 "CREATE TABLE " + LEVEL_TABLE_NAME + " (ch_id INT, l_id INT, setup TEXT, moves INT, PRIMARY KEY(ch_id, l_id), FOREIGN KEY(ch_id) REFERENCES challenge(ch_id));";
 
-    private SQLiteDatabase _db;
+    private SQLiteDatabase m_db;
 
     public SQLHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -41,21 +41,21 @@ public class SQLHelper extends SQLiteOpenHelper {
 
     @Override
     protected void finalize() throws Throwable {
-        if (_db != null && _db.isOpen())
-            _db.close();
+        if (m_db != null && m_db.isOpen())
+            m_db.close();
 
         super.finalize();
     }
 
     public void populateChallenge(Challenge challenge, List<Level> levelList)
     {
-        _db = this.getWritableDatabase();
+        m_db = this.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
         cv.put("ch_id", challenge.getId());
         cv.put("name", challenge.getName());
 
-        _db.insert(CHALLENGE_TABLE_NAME, null, cv);
+        m_db.insert(CHALLENGE_TABLE_NAME, null, cv);
 
         for (Level level : levelList)
         {
@@ -66,17 +66,17 @@ public class SQLHelper extends SQLiteOpenHelper {
             levelcv.put("setup", level.getLevel());
             levelcv.put("moves", 0);
 
-            _db.insert(LEVEL_TABLE_NAME, null, levelcv);
+            m_db.insert(LEVEL_TABLE_NAME, null, levelcv);
         }
     }
 
     public Level getNextLevel(int challengeId, int levelId)
     {
-        _db = this.getReadableDatabase();
+        m_db = this.getReadableDatabase();
 
         Level level = null;
 
-        Cursor cursor = _db.query(LEVEL_TABLE_NAME, new String[] {"ch_id", "l_id, setup", "moves"}, "ch_id = ? and l_id = ?", new String[] {String.valueOf(challengeId), String.valueOf(levelId+1)}, "", "", "" );
+        Cursor cursor = m_db.query(LEVEL_TABLE_NAME, new String[] {"ch_id", "l_id, setup", "moves"}, "ch_id = ? and l_id = ?", new String[] {String.valueOf(challengeId), String.valueOf(levelId+1)}, "", "", "" );
 
         while (cursor.moveToNext())
         {
@@ -95,7 +95,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 
         if (level == null)
         {
-            Cursor secondaryCursor = _db.query(LEVEL_TABLE_NAME, new String[] {"ch_id", "l_id, setup", "moves"}, "ch_id = ? and l_id = ?", new String[] {String.valueOf(challengeId+1), "1"}, "", "", "" );
+            Cursor secondaryCursor = m_db.query(LEVEL_TABLE_NAME, new String[] {"ch_id", "l_id, setup", "moves"}, "ch_id = ? and l_id = ?", new String[] {String.valueOf(challengeId+1), "1"}, "", "", "" );
 
             while (secondaryCursor.moveToNext())
             {
@@ -118,9 +118,9 @@ public class SQLHelper extends SQLiteOpenHelper {
 
     public boolean saveLevel(Integer challenge, Integer level, int moves)
     {
-        _db = this.getWritableDatabase();
+        m_db = this.getWritableDatabase();
 
-        Cursor cursor = _db.query(LEVEL_TABLE_NAME, new String[] {"moves"}, "ch_id = ? and l_id = ?", new String[] {challenge.toString(), level.toString()}, "", "", "");
+        Cursor cursor = m_db.query(LEVEL_TABLE_NAME, new String[] {"moves"}, "ch_id = ? and l_id = ?", new String[] {challenge.toString(), level.toString()}, "", "", "");
 
         int score = -1;
 
@@ -135,7 +135,7 @@ public class SQLHelper extends SQLiteOpenHelper {
             ContentValues cv = new ContentValues();
             cv.put("moves", moves);
 
-            return _db.update(LEVEL_TABLE_NAME, cv, "ch_id = ? and l_id = ?", new String[] {challenge.toString(), level.toString()} ) > 0 ;
+            return m_db.update(LEVEL_TABLE_NAME, cv, "ch_id = ? and l_id = ?", new String[] {challenge.toString(), level.toString()} ) > 0 ;
         }
 
         return false;
@@ -143,9 +143,9 @@ public class SQLHelper extends SQLiteOpenHelper {
 
     public Challenge getChallenge(int challengeId)
     {
-        _db = this.getReadableDatabase();
+        m_db = this.getReadableDatabase();
 
-        Cursor cursor = _db.query(CHALLENGE_TABLE_NAME, new String[] {"ch_id, name"}, "ch_id = ?", new String[] {String.valueOf(challengeId)}, "", "", "ch_id" );
+        Cursor cursor = m_db.query(CHALLENGE_TABLE_NAME, new String[] {"ch_id, name"}, "ch_id = ?", new String[] {String.valueOf(challengeId)}, "", "", "ch_id" );
 
         Challenge challenge = null;
 
@@ -165,9 +165,9 @@ public class SQLHelper extends SQLiteOpenHelper {
 
     public List<Challenge> getAllChallenges()
     {
-        _db = this.getReadableDatabase();
+        m_db = this.getReadableDatabase();
 
-        Cursor cursor = _db.query(CHALLENGE_TABLE_NAME, new String[] {"ch_id, name"}, "", new String[] {}, "", "", "ch_id" );
+        Cursor cursor = m_db.query(CHALLENGE_TABLE_NAME, new String[] {"ch_id, name"}, "", new String[] {}, "", "", "ch_id" );
 
         ArrayList<Challenge> challengeList = new ArrayList<Challenge>();
 
@@ -188,9 +188,9 @@ public class SQLHelper extends SQLiteOpenHelper {
 
     public List<Level> getChallengeLevels(Challenge challenge)
     {
-        _db = this.getReadableDatabase();
+        m_db = this.getReadableDatabase();
 
-        Cursor cursor = _db.query(LEVEL_TABLE_NAME, new String[] {"l_id, setup, moves"}, "ch_id = ?", new String[] {String.valueOf(challenge.getId())}, "", "", "l_id" );
+        Cursor cursor = m_db.query(LEVEL_TABLE_NAME, new String[] {"l_id, setup, moves"}, "ch_id = ?", new String[] {String.valueOf(challenge.getId())}, "", "", "l_id" );
 
         ArrayList<Level> levelList = new ArrayList<Level>();
 
@@ -213,9 +213,9 @@ public class SQLHelper extends SQLiteOpenHelper {
 
     public Level getLevel(int challengeId, int levelId)
     {
-        _db = this.getReadableDatabase();
+        m_db = this.getReadableDatabase();
 
-        Cursor cursor = _db.query(LEVEL_TABLE_NAME, new String[] {"l_id, setup, moves"}, "ch_id = ? and l_id = ?", new String[] {String.valueOf(challengeId), String.valueOf(levelId)}, "", "", "l_id" );
+        Cursor cursor = m_db.query(LEVEL_TABLE_NAME, new String[] {"l_id, setup, moves"}, "ch_id = ? and l_id = ?", new String[] {String.valueOf(challengeId), String.valueOf(levelId)}, "", "", "l_id" );
 
         Level level = null;
 
