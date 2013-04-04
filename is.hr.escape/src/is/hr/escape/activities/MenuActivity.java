@@ -16,6 +16,11 @@ import java.util.Map;
 
 /**
  * The menu activity is opened when the application starts. It's the main menu for the game
+ *
+ * The first time the application runs, the bundled challenges and levels are parsed and
+ * inserted into the database. This way, if we add the option of downloading additional
+ * challenges, we will have all levels and challenges in the database instead of having
+ * some of them in xml files and others in the database.
  */
 public class MenuActivity extends Activity {
 
@@ -27,7 +32,7 @@ public class MenuActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         SharedPreferences prefs = getSharedPreferences(MenuActivity.class.getSimpleName(), Activity.MODE_PRIVATE);
-        if(true) {//prefs.getBoolean("firstRun", true)) {
+        if(prefs.getBoolean("firstRun", true)) {
             getBaseContext().deleteDatabase("escape");
             Map<Challenge, List<Level>> defaultChallenges = XMLHelper.loadChallengesFromAssets(getAssets());
             SQLHelper helper = new SQLHelper(getBaseContext());
