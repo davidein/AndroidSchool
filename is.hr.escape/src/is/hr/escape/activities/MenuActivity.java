@@ -1,10 +1,11 @@
-package is.hr.escape;
+package is.hr.escape.activities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import is.hr.escape.R;
 import is.hr.escape.objects.Challenge;
 import is.hr.escape.objects.Level;
 import is.hr.escape.helpers.SQLHelper;

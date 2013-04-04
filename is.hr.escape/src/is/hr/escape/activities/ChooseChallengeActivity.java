@@ -1,10 +1,12 @@
-package is.hr.escape;
+package is.hr.escape.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import is.hr.escape.R;
+import is.hr.escape.SliderPageAdapter;
 import is.hr.escape.objects.Challenge;
 import is.hr.escape.objects.Level;
 import is.hr.escape.helpers.SQLHelper;
