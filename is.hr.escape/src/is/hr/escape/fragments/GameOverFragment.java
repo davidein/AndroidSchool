@@ -12,24 +12,22 @@ import android.widget.TextView;
 import is.hr.escape.R;
 
 /**
- * Created with IntelliJ IDEA.
- * User: heidar
- * Date: 3/24/13
- * Time: 11:45 AM
- * To change this template use File | Settings | File Templates.
+ * Displays the game over popup screen.
+ * Clients pass in handlers to determine what should happen when users click the next level and
+ * quit buttons
  */
 public class GameOverFragment extends DialogFragment {
-    private DialogInterface.OnClickListener quitListener;
-    private DialogInterface.OnClickListener nextListener;
-    private TextView _score;
-    private int _iScore;
+    private DialogInterface.OnClickListener m_quitListener;
+    private DialogInterface.OnClickListener m_nextListener;
+    private TextView m_score;
+    private int m_iScore;
 
     public GameOverFragment(DialogInterface.OnClickListener quitListener,
                             DialogInterface.OnClickListener nextListener,
                             int score) {
-        this.quitListener = quitListener;
-        this.nextListener = nextListener;
-        _iScore = score;
+        this.m_quitListener = quitListener;
+        this.m_nextListener = nextListener;
+        m_iScore = score;
     }
 
     @Override
@@ -47,11 +45,11 @@ public class GameOverFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.gameover, null);
 
         builder.setView(view)
-                .setPositiveButton("Next puzzle", nextListener)
-                .setNegativeButton("Quit", quitListener);
+                .setPositiveButton("Next puzzle", m_nextListener)
+                .setNegativeButton("Quit", m_quitListener);
 
-        _score = (TextView) view.findViewById(R.id.score);
-        _score.setText(String.format("Moves: %d", _iScore));
+        m_score = (TextView) view.findViewById(R.id.score);
+        m_score.setText(String.format("Moves: %d", m_iScore));
 
         return builder.create();
     }
