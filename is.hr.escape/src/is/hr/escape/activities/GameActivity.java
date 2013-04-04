@@ -22,77 +22,54 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: heidar
- * Date: 3/23/13
- * Time: 10:11 AM
- * To change this template use File | Settings | File Templates.
+ * The GameActivity is where all the magic happens. It is started with a given level but when levels are
+ * completed, the user can navigate to the next level as well.
+ *
+ * It uses a GameLogic class which handles the business logic for the game while the activity
+ * controls rendering of the game state and delegates user input to the game logic.
  */
 public class GameActivity extends Activity implements GameHandler {
-    private GameLogic logic;
-    private DrawView drawView;
-    private String currentLevel;
-    private int levelId;
-    private int challengeId;
+    private GameLogic m_logic;
+    private DrawView m_drawView;
+    private String m_currentLevel;
+    private int m_levelId;
+    private int m_challengeId;
 
-    private TextView levelTextView;
-    private TextView challengeTextView;
+    private TextView m_levelTextView;
+    private TextView m_challengeTextView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        logic = new GameLogic();
+        m_logic = new GameLogic();
         setContentView(R.layout.game);
 
-        drawView = (DrawView) findViewById(R.id.drawView);
-        drawView.setGameHandler(this);
+        m_drawView = (DrawView) findViewById(R.id.drawView);
+        m_drawView.setGameHandler(this);
 
-        levelTextView = (TextView) findViewById(R.id.level);
-        challengeTextView = (TextView) findViewById(R.id.challenge);
+        m_levelTextView = (TextView) findViewById(R.id.level);
+        m_challengeTextView = (TextView) findViewById(R.id.challenge);
 
-        currentLevel = getIntent().getStringExtra("level");
-        levelId = getIntent().getIntExtra("levelId", 0);
-        challengeId = getIntent().getIntExtra("challengeId", 0);
+        m_currentLevel = getIntent().getStringExtra("level");
+        m_levelId = getIntent().getIntExtra("levelId", 0);
+        m_challengeId = getIntent().getIntExtra("challengeId", 0);
 
-        levelTextView.setText( String.format("Level %d", levelId));
+        m_levelTextView.setText(String.format("Level %d", m_levelId));
 
         SQLHelper sqlHelper = new SQLHelper(getBaseContext());
-        Challenge challenge = sqlHelper.getChallenge( challengeId);
-        challengeTextView.setText(challenge.getName());
+        Challenge challenge = sqlHelper.getChallenge( m_challengeId);
+        m_challengeTextView.setText(challenge.getName());
 
         setup();
     }
 
-    public List<Car> getCars() {
-        return logic.getCars();
-    }
 
-    public List<Action> getActionsFor(Car car) {
-        List<Action> allActions =  logic.getActions();
-        List<Action> actions = new ArrayList<Action>();
-
-        for(Action action : allActions) {
-            if(action.getId() == car.getId()) {
-                actions.add(action);
-            }
-        }
-
-        return actions;
-    }
-
-    public void actionPerformed(Action action) {
-        logic.makeAction(action);
-        drawView.invalidate();
-        updateMoves();
-        if(logic.isSolved()) {
-            drawView.disableTouch();
-            gameOver();
-        }
-    }
-
+    /**
+     * Displays the game over popup over the main screen
+     */
     private void gameOver() {
         SQLHelper sqlHelper = new SQLHelper(getBaseContext());
 
-        sqlHelper.saveLevel(challengeId, levelId, logic.getMoveCount());
+        sqlHelper.saveLevel(m_challengeId, m_levelId, m_logic.getMoveCount());
 
         DialogFragment fragment = new GameOverFragment(new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -103,42 +80,37 @@ public class GameActivity extends Activity implements GameHandler {
             public void onClick(DialogInterface dialog, int which) {
                 //Clicked next
                 SQLHelper sqlHelper = new SQLHelper(getBaseContext());
-                Level level = sqlHelper.getNextLevel(challengeId, levelId);
-                currentLevel = level.getLevel();
-                levelId = level.getLevelId();
-                challengeId = level.getChallengeId();
+                Level level = sqlHelper.getNextLevel(m_challengeId, m_levelId);
+                m_currentLevel = level.getLevel();
+                m_levelId = level.getLevelId();
+                m_challengeId = level.getChallengeId();
 
-                levelTextView.setText( String.format("Level %d", levelId));
+                m_levelTextView.setText(String.format("Level %d", m_levelId));
 
-                Challenge challenge = sqlHelper.getChallenge( challengeId);
-                challengeTextView.setText(challenge.getName());
+                Challenge challenge = sqlHelper.getChallenge( m_challengeId);
+                m_challengeTextView.setText(challenge.getName());
                 setup();
                 updateMoves();
             }
-        }, logic.getMoveCount());
+        }, m_logic.getMoveCount());
         fragment.setCancelable(false);
 
-        fragment.show(getFragmentManager(), "derp");
+        fragment.show(getFragmentManager(), "david er spes");
     }
 
+    /**
+     * Updates the current moves textbox to the value stored in the activity
+     */
     private void updateMoves() {
         TextView moves = (TextView)findViewById(R.id.moves);
-        moves.setText(String.valueOf(logic.getMoveCount()));
-    }
-
-    public int getRows() {
-        return logic.get_numRows();
-    }
-
-    public int getCols() {
-        return logic.get_numCols();
+        moves.setText(String.valueOf(m_logic.getMoveCount()));
     }
 
     @Override
     public void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
-        List<Car> cars = logic.getCars();
-        bundle.putInt("moveCount", logic.getMoveCount());
+        List<Car> cars = m_logic.getCars();
+        bundle.putInt("moveCount", m_logic.getMoveCount());
         bundle.putInt("carCount", cars.size());
         for(int i = 0; i < cars.size(); i++) {
             bundle.putInt("carid" + i, cars.get(i).getId());
@@ -167,20 +139,64 @@ public class GameActivity extends Activity implements GameHandler {
             car.setId(id);
             cars.add(car);
         }
-        logic.setup(cars);
-        logic.setMoveCount(moveCount);
+        m_logic.setup(cars);
+        m_logic.setMoveCount(moveCount);
         updateMoves();
     }
 
+    /**
+     * Sets the initial positions of the game according to the current level setup
+     */
     private void setup() {
-        logic.setup(currentLevel);
-        drawView.enableTouch();
-        drawView.invalidate();
+        m_logic.setup(m_currentLevel);
+        m_drawView.enableTouch();
+        m_drawView.invalidate();
     }
 
+    /**
+     * Callback method for when the user clicks the restart button
+     */
     public void restart(View view) {
         setup();
         updateMoves();
-        drawView.invalidate();
+        m_drawView.invalidate();
     }
+
+    /** Begin GameHandler Implementation **/
+    public List<Car> getCars() {
+        return m_logic.getCars();
+    }
+
+    public List<Action> getActionsFor(Car car) {
+        List<Action> allActions =  m_logic.getActions();
+        List<Action> actions = new ArrayList<Action>();
+
+        for(Action action : allActions) {
+            if(action.getId() == car.getId()) {
+                actions.add(action);
+            }
+        }
+
+        return actions;
+    }
+
+    public void actionPerformed(Action action) {
+        m_logic.makeAction(action);
+        m_drawView.invalidate();
+        updateMoves();
+        if(m_logic.isSolved()) {
+            m_drawView.disableTouch();
+            gameOver();
+        }
+    }
+
+    public int getRows() {
+        return m_logic.get_numRows();
+    }
+
+    public int getCols() {
+        return m_logic.get_numCols();
+    }
+
+    /** End GameHandler Implementation **/
 }

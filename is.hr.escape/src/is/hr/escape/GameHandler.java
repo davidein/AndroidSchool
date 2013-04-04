@@ -6,16 +6,32 @@ import is.hr.escape.objects.Car;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: heidar
- * Date: 3/23/13
- * Time: 1:01 PM
- * To change this template use File | Settings | File Templates.
+ * A game handler interface allows the UI code to send and receive messages from the controller (Activity)
+ * regarding the current state of the game
  */
 public interface GameHandler {
+    /**
+     * @return Returns a list of all cars
+     */
     List<Car> getCars();
+
+    /**
+     * @return Returns all legal actions for a given car
+     */
     List<Action> getActionsFor(Car car);
+
+    /**
+     * An action was selected by the user to be performed
+     */
     void actionPerformed(Action action);
+
+    /**
+     * @return Returns the number of rows used in the current puzzle
+     */
     int getRows();
+
+    /**
+     * @return Returns the number of columns used in the current puzzle
+     */
     int getCols();
 }
