@@ -211,6 +211,29 @@ public class SQLHelper extends SQLiteOpenHelper {
         return  levelList;
     }
 
+    public Level getLevel(int challengeId, int levelId)
+    {
+        _db = this.getReadableDatabase();
+
+        Cursor cursor = _db.query(LEVEL_TABLE_NAME, new String[] {"l_id, setup, moves"}, "ch_id = ? and l_id = ?", new String[] {String.valueOf(challengeId), String.valueOf(levelId)}, "", "", "l_id" );
+
+        Level level = null;
+
+        while (cursor.moveToNext())
+        {
+            int identityColumnIndex = cursor.getColumnIndex("l_id");
+            int setupColumnIndex = cursor.getColumnIndex("setup");
+            int moveColumnIndex = cursor.getColumnIndex("moves");
+
+            int identity = cursor.getInt(identityColumnIndex);
+            String setup = cursor.getString(setupColumnIndex);
+            int moves = cursor.getInt(moveColumnIndex);
+
+            level = new Level(challengeId, identity, setup, moves);
+        }
+
+        return  level;
+    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

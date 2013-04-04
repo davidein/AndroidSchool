@@ -37,6 +37,7 @@ public class GameActivity extends Activity implements GameHandler {
 
     private TextView m_levelTextView;
     private TextView m_challengeTextView;
+    private TextView m_highscoreTextView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +49,7 @@ public class GameActivity extends Activity implements GameHandler {
 
         m_levelTextView = (TextView) findViewById(R.id.level);
         m_challengeTextView = (TextView) findViewById(R.id.challenge);
+        m_highscoreTextView = (TextView) findViewById(R.id.highscore);
 
         m_currentLevel = getIntent().getStringExtra("level");
         m_levelId = getIntent().getIntExtra("levelId", 0);
@@ -58,6 +60,9 @@ public class GameActivity extends Activity implements GameHandler {
         SQLHelper sqlHelper = new SQLHelper(getBaseContext());
         Challenge challenge = sqlHelper.getChallenge( m_challengeId);
         m_challengeTextView.setText(challenge.getName());
+
+        Level level = sqlHelper.getLevel(m_challengeId, m_levelId);
+        m_highscoreTextView.setText(String.valueOf(level.getMoveCount()));
 
         setup();
     }
@@ -89,6 +94,9 @@ public class GameActivity extends Activity implements GameHandler {
 
                 Challenge challenge = sqlHelper.getChallenge( m_challengeId);
                 m_challengeTextView.setText(challenge.getName());
+
+
+                m_highscoreTextView.setText(String.valueOf(level.getMoveCount()));
                 setup();
                 updateMoves();
             }
