@@ -1,10 +1,7 @@
 package is.hr.escape.objects;
 
 /**
- * Created with IntelliJ IDEA.
- * User: heidar
- * Date: 4/2/13
- * Time: 5:48 PM
+ * A POJO class for challenges, containing a challenge's id and name
  */
 public class Challenge {
     private final int m_id;
