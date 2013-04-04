@@ -110,6 +110,8 @@ public class SliderPageAdapter extends PagerAdapter {
 
             linearLayout.setTag(level);
 
+            LinearLayout linearLayoutItem = (LinearLayout) linearLayout.findViewById(R.id.level_item);
+
             TextView levelTxt = (TextView) linearLayout.findViewById(R.id.level_txt);
             TextView levelScoreTxt = (TextView) linearLayout.findViewById(R.id.levelScore_txt);
 
@@ -123,6 +125,7 @@ public class SliderPageAdapter extends PagerAdapter {
             }
             else
             {
+                linearLayoutItem.setBackgroundResource(R.drawable.container_level_select_complete);
                 levelScoreTxt.setText(String.format("Highscore: %d", score));
             }
             return linearLayout;
