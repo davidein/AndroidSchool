@@ -15,9 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * User: David Einarsson
- * Date: 23.3.2013
- * Time: 09:32
+ * The menu activity is opened when the application starts. It's the main menu for the game
  */
 public class MenuActivity extends Activity {
 
