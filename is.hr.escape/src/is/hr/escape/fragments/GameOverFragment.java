@@ -1,4 +1,4 @@
-package is.hr.escape;
+package is.hr.escape.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import is.hr.escape.R;
 
 /**
  * Created with IntelliJ IDEA.

@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 import is.hr.escape.DrawView;
 import is.hr.escape.GameHandler;
-import is.hr.escape.GameOverFragment;
+import is.hr.escape.fragments.GameOverFragment;
 import is.hr.escape.R;
 import is.hr.escape.objects.Challenge;
 import is.hr.escape.objects.Level;
