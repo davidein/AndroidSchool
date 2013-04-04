@@ -32,8 +32,8 @@ public class MenuActivity extends Activity {
         if(true) {//prefs.getBoolean("firstRun", true)) {
             getBaseContext().deleteDatabase("escape");
             Map<Challenge, List<Level>> defaultChallenges = XMLHelper.loadChallengesFromAssets(getAssets());
+            SQLHelper helper = new SQLHelper(getBaseContext());
             for(Challenge challenge : defaultChallenges.keySet()) {
-                SQLHelper helper = new SQLHelper(getBaseContext());
                 helper.populateChallenge(challenge, defaultChallenges.get(challenge));
             }
             SharedPreferences.Editor editor = prefs.edit();
