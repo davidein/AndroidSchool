@@ -11,10 +11,12 @@ public class Level {
     public final int challengeId;
     public final int levelId;
     public final String level;
+    public final int moveCount;
 
-    public Level(int challengeId, int id, String level) {
+    public Level(int challengeId, int id, String level, int moves) {
         this.challengeId = challengeId;
         levelId = id;
         this.level = level;
+        this.moveCount = moves;
     }
 }

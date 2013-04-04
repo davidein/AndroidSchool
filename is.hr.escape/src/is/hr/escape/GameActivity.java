@@ -79,7 +79,7 @@ public class GameActivity extends Activity implements GameHandler {
     private void gameOver() {
         SQLHelper sqlHelper = new SQLHelper(getBaseContext());
 
-        sqlHelper.saveScore(challengeId, levelId, logic.getMoveCount());
+        sqlHelper.saveLevel(challengeId, levelId, logic.getMoveCount());
 
         DialogFragment fragment = new GameOverFragment(new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {

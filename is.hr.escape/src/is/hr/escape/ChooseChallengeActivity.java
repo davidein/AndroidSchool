@@ -62,6 +62,7 @@ public class ChooseChallengeActivity extends FragmentActivity {
                 adapter.addPage(challenge, fragmentLevels);
             }
         }
+        adapter.notifyDataSetChanged();
     }
 
     @Override

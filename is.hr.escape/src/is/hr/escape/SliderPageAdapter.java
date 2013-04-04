@@ -115,7 +115,7 @@ public class SliderPageAdapter extends PagerAdapter {
 
             levelTxt.setText(String.valueOf(level.levelId));
 
-            int score = sqlHelper.getScore(level.challengeId, level.levelId);
+            int score = level.moveCount;
 
             if (score == 0)
             {
