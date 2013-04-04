@@ -8,6 +8,11 @@ import is.hr.escape.objects.Car;
 import java.util.*;
 import java.util.regex.MatchResult;
 
+
+/**
+ * This class implements all logic for our game. It is a slightly modified version of the
+ * code handed out to us by the instructor.
+ */
 public class GameLogic {
 
     public int get_numCols() {
