@@ -41,6 +41,7 @@ public class MenuActivity extends Activity {
             }
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean("firstRun", false);
+            editor.commit();
         }
         setContentView(R.layout.menu);
     }
