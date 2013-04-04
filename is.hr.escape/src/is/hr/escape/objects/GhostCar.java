@@ -1,8 +1,7 @@
 package is.hr.escape.objects;
 
 import android.graphics.*;
-import android.util.Log;
-import is.hr.escape.helpers.Orientation;
+import is.hr.escape.objects.Car.Orientation;
 
 /**
  * Created with IntelliJ IDEA.

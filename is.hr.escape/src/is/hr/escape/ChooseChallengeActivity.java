@@ -4,13 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import is.hr.escape.helpers.Challenge;
-import is.hr.escape.helpers.Level;
+import is.hr.escape.objects.Challenge;
+import is.hr.escape.objects.Level;
 import is.hr.escape.helpers.SQLHelper;
-import is.hr.escape.helpers.XMLHelper;
 
 import java.util.*;
 
@@ -81,9 +78,9 @@ public class ChooseChallengeActivity extends FragmentActivity {
     public void levelClick(View view) {
         Level level = (Level)view.getTag();
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra("level", level.level);
-        intent.putExtra("levelId", level.levelId);
-        intent.putExtra("challengeId", level.challengeId);
+        intent.putExtra("level", level.getLevel());
+        intent.putExtra("levelId", level.getLevelId());
+        intent.putExtra("challengeId", level.getChallengeId());
         currentPage = pager.getCurrentItem();
         startActivity(intent);
     }

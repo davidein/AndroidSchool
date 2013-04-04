@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import is.hr.escape.objects.Challenge;
+import is.hr.escape.objects.Level;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +52,8 @@ public class SQLHelper extends SQLiteOpenHelper {
         _db = this.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
-        cv.put("ch_id", challenge.id);
-        cv.put("name", challenge.name);
+        cv.put("ch_id", challenge.getId());
+        cv.put("name", challenge.getName());
 
         _db.insert(CHALLENGE_TABLE_NAME, null, cv);
 
@@ -59,9 +61,9 @@ public class SQLHelper extends SQLiteOpenHelper {
         {
 
             ContentValues levelcv = new ContentValues();
-            levelcv.put("ch_id", challenge.id);
-            levelcv.put("l_id", level.levelId);
-            levelcv.put("setup", level.level);
+            levelcv.put("ch_id", challenge.getId());
+            levelcv.put("l_id", level.getLevelId());
+            levelcv.put("setup", level.getLevel());
             levelcv.put("moves", 0);
 
             _db.insert(LEVEL_TABLE_NAME, null, levelcv);
@@ -166,7 +168,7 @@ public class SQLHelper extends SQLiteOpenHelper {
     {
         _db = this.getReadableDatabase();
 
-        Cursor cursor = _db.query(LEVEL_TABLE_NAME, new String[] {"l_id, setup, moves"}, "ch_id = ?", new String[] {String.valueOf(challenge.id)}, "", "", "l_id" );
+        Cursor cursor = _db.query(LEVEL_TABLE_NAME, new String[] {"l_id, setup, moves"}, "ch_id = ?", new String[] {String.valueOf(challenge.getId())}, "", "", "l_id" );
 
         ArrayList<Level> levelList = new ArrayList<Level>();
 
@@ -180,7 +182,7 @@ public class SQLHelper extends SQLiteOpenHelper {
             String setup = cursor.getString(setupColumnIndex);
             int moves = cursor.getInt(moveColumnIndex);
 
-            Level level = new Level(challenge.id, identity, setup, moves);
+            Level level = new Level(challenge.getId(), identity, setup, moves);
             levelList.add(level);
         }
 

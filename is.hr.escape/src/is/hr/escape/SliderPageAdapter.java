@@ -1,16 +1,12 @@
 package is.hr.escape;
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewGroupCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import is.hr.escape.helpers.Challenge;
-import is.hr.escape.helpers.Level;
+import is.hr.escape.objects.Challenge;
+import is.hr.escape.objects.Level;
 import is.hr.escape.helpers.SQLHelper;
 
 import java.util.ArrayList;
@@ -39,10 +35,10 @@ public class SliderPageAdapter extends PagerAdapter {
 
         GridView grid = (GridView)root.findViewById(R.id.grid);
         TextView label = (TextView)root.findViewById(R.id.difficulty);
-        label.setText(item.challenge.name);
+        label.setText(item.challenge.getName());
         LevelAdapter adapter = new LevelAdapter(inflater, item.levels);
         grid.setAdapter(adapter);
-        viewMap.put(item.challenge.name, root);
+        viewMap.put(item.challenge.getName(), root);
         return root;
     }
 
@@ -115,9 +111,9 @@ public class SliderPageAdapter extends PagerAdapter {
             TextView levelTxt = (TextView) linearLayout.findViewById(R.id.level_txt);
             TextView levelScoreTxt = (TextView) linearLayout.findViewById(R.id.levelScore_txt);
 
-            levelTxt.setText(String.valueOf(level.levelId));
+            levelTxt.setText(String.valueOf(level.getLevelId()));
 
-            int score = level.moveCount;
+            int score = level.getMoveCount();
 
             if (score == 0)
             {

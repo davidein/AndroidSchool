@@ -2,7 +2,7 @@ package is.hr.escape.logic; /**
  * This class provides the logic for the TrafficJam puzzle.
  *
  */
-import is.hr.escape.helpers.Orientation;
+import is.hr.escape.objects.Car.Orientation;
 import is.hr.escape.objects.Car;
 
 import java.util.*;

@@ -1,8 +1,9 @@
 package is.hr.escape.helpers;
 
-import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Pair;
+import is.hr.escape.objects.Challenge;
+import is.hr.escape.objects.Level;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import is.hr.escape.helpers.Challenge;
-import is.hr.escape.helpers.Level;
+import is.hr.escape.objects.Challenge;
+import is.hr.escape.objects.Level;
 import is.hr.escape.helpers.SQLHelper;
 import is.hr.escape.helpers.XMLHelper;
 

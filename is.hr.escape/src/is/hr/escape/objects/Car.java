@@ -1,8 +1,6 @@
 package is.hr.escape.objects;
 
 import android.graphics.*;
-import is.hr.escape.R;
-import is.hr.escape.helpers.Orientation;
 
 /**
  * User: David Einarsson
@@ -106,4 +104,7 @@ public class Car {
         return String.format("(%s %d %d %d)", getOrientation() == Orientation.Horizontal ? 'H' : 'V', getCol(), getRow(), getLength());
     }
 
+    public enum Orientation {
+        Horizontal, Vertical
+    }
 }

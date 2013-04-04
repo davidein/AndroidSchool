@@ -1,21 +1,17 @@
 package is.hr.escape;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-import is.hr.escape.helpers.Level;
-import is.hr.escape.helpers.Orientation;
+import is.hr.escape.objects.Level;
 import is.hr.escape.helpers.SQLHelper;
 import is.hr.escape.logic.Action;
 import is.hr.escape.logic.GameLogic;
 import is.hr.escape.objects.Car;
+import is.hr.escape.objects.Car.Orientation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,9 +87,9 @@ public class GameActivity extends Activity implements GameHandler {
                 //Clicked next
                 SQLHelper sqlHelper = new SQLHelper(getBaseContext());
                 Level level = sqlHelper.getNextLevel(challengeId, levelId);
-                currentLevel = level.level;
-                levelId = level.levelId;
-                challengeId = level.challengeId;
+                currentLevel = level.getLevel();
+                levelId = level.getLevelId();
+                challengeId = level.getChallengeId();
                 setup();
                 updateMoves();
             }
@@ -126,7 +122,7 @@ public class GameActivity extends Activity implements GameHandler {
             bundle.putInt("carid" + i, cars.get(i).getId());
             bundle.putInt("carcol" + i, cars.get(i).getCol());
             bundle.putInt("carrow" + i, cars.get(i).getRow());
-            bundle.putBoolean("carvert" + i, cars.get(i).getOrientation() == Orientation.Vertical);
+            bundle.putBoolean("carvert" + i, cars.get(i).getOrientation() == Car.Orientation.Vertical);
             bundle.putInt("carlen" + i, cars.get(i).getLength());
         }
     }
