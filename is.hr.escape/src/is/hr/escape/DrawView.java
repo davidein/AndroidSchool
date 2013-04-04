@@ -14,25 +14,27 @@ import is.hr.escape.objects.GhostCar;
 import java.util.List;
 
 /**
- * User: David Einarsson
- * Date: 23.3.2013
- * Time: 10:11
+ * The DrawView renders the current state of the game.
+ * It receives information about the current state of the game through a GameHandler interface.
+ *
+ * It handles touch events on the game view and notifies the game handler when actions are performed
  */
 public class DrawView extends View {
-    GameHandler handler;
-    Bitmap _woodTexture;
-    boolean _touchEnabled;
+    GameHandler m_handler;
+    Bitmap m_woodTexture;
+    boolean m_touchEnabled;
 
-    private GhostCar _ghost = null;
+    private GhostCar m_ghost = null;
 
     public DrawView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        _touchEnabled = true;
+        m_touchEnabled = true;
 
-        _woodTexture = BitmapFactory.decodeResource(getResources(), R.drawable.woodtexture);
+        m_woodTexture = BitmapFactory.decodeResource(getResources(), R.drawable.woodtexture);
     }
+
     public void setGameHandler(GameHandler handler) {
-        this.handler = handler;
+        m_handler = handler;
     }
 
     @Override
@@ -41,14 +43,14 @@ public class DrawView extends View {
 
         drawBase(canvas);
 
-        int baseWidth = getWidth() / handler.getCols();
-        int baseHeight = getHeight() / handler.getRows();
+        int baseWidth = getWidth() / m_handler.getCols();
+        int baseHeight = getHeight() / m_handler.getRows();
 
         Car ghostCar = null;
         //Draw all static cars
-        for (Car car : handler.getCars())
+        for (Car car : m_handler.getCars())
         {
-            if(_ghost != null && car.getId() ==_ghost.getId()) {
+            if(m_ghost != null && car.getId() == m_ghost.getId()) {
                 ghostCar = car;
                 car.set_isGhost(true);
                 continue;
@@ -64,33 +66,34 @@ public class DrawView extends View {
                 carRect.set((car.getCol())*baseWidth+1,(car.getRow())*baseHeight+1, (car.getCol()+1)*baseWidth,(car.getRow()+car.getLength())*baseHeight);
             }
 
-            car.Draw(canvas, carRect, _woodTexture);
+            car.Draw(canvas, carRect, m_woodTexture);
         }
         //Draw the currently held car on its own
         if(ghostCar != null) {
             RectF carRect = new RectF();
             if (ghostCar.getOrientation() == Orientation.Horizontal)
             {
-                carRect.set(_ghost.getX(), _ghost.getY(), _ghost.getX() + (ghostCar.getLength() * baseWidth), _ghost.getY() + baseHeight);
+                carRect.set(m_ghost.getX(), m_ghost.getY(), m_ghost.getX() + (ghostCar.getLength() * baseWidth), m_ghost.getY() + baseHeight);
             }
             else
             {
-                carRect.set(_ghost.getX(), _ghost.getY(), _ghost.getX() + baseWidth, _ghost.getY() + (ghostCar.getLength())*baseHeight);
+                carRect.set(m_ghost.getX(), m_ghost.getY(), m_ghost.getX() + baseWidth, m_ghost.getY() + (ghostCar.getLength()) * baseHeight);
             }
-            ghostCar.Draw(canvas, carRect, _woodTexture);
+            ghostCar.Draw(canvas, carRect, m_woodTexture);
             ghostCar.set_isGhost(false);
         }
     }
 
 
+    //Draws the level background
     private void drawBase(Canvas canvas)
     {
         Paint base = new Paint();
         base.setColor(Color.GREEN);
         base.setAlpha(30);
 
-        int baseWidth = getWidth() / handler.getCols();
-        int baseHeight = getHeight() / handler.getRows();
+        int baseWidth = getWidth() / m_handler.getCols();
+        int baseHeight = getHeight() / m_handler.getRows();
 
         RectF canvasSpace = new RectF((4)*baseWidth,(3)*baseHeight, (6) * baseWidth,(4)*baseHeight);
         canvas.drawRoundRect(canvasSpace, 15, 15, base);
@@ -104,13 +107,13 @@ public class DrawView extends View {
         Paint linePainter = new Paint();
         linePainter.setColor(Color.BLACK);
         linePainter.setAlpha(200);
-        for (int irow = 1;irow<handler.getRows();irow++)
+        for (int irow = 1;irow<m_handler.getRows();irow++)
         {
-            canvas.drawLine(0, getHeight()/handler.getRows()*irow, getWidth(), getHeight()/handler.getRows()*irow, linePainter );
+            canvas.drawLine(0, getHeight()/m_handler.getRows()*irow, getWidth(), getHeight()/m_handler.getRows()*irow, linePainter );
         }
-        for (int icol = 1;icol<handler.getRows();icol++)
+        for (int icol = 1;icol<m_handler.getRows();icol++)
         {
-            canvas.drawLine(getWidth()/handler.getCols() * icol, 0, getWidth()/handler.getCols() * icol, getHeight(), linePainter );
+            canvas.drawLine(getWidth()/m_handler.getCols() * icol, 0, getWidth()/m_handler.getCols() * icol, getHeight(), linePainter );
         }
     }
 
@@ -123,7 +126,7 @@ public class DrawView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(!_touchEnabled) {
+        if(!m_touchEnabled) {
             return false;
         }
         int x = (int) event.getX();
@@ -133,7 +136,7 @@ public class DrawView extends View {
             case MotionEvent.ACTION_DOWN:
                 Car selected = getCar(x, y);
                 if(selected != null) {
-                    List<Action> actions = handler.getActionsFor(selected);
+                    List<Action> actions = m_handler.getActionsFor(selected);
                     Point min = new Point(selected.getCol(), selected.getRow()), max = new Point(min);
 
                     //Find the bounds for the car
@@ -165,22 +168,23 @@ public class DrawView extends View {
 
                     Point screenPos = gridToCoordinates(selected.getCol(), selected.getRow());
                     Point offset = new Point(screenPos.x - x, screenPos.y - y);
-                    _ghost = new GhostCar(selected, screenPos, bounds, offset   );
+                    m_ghost = new GhostCar(selected, screenPos, bounds, offset   );
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                if(_ghost != null) {
+                if(m_ghost != null) {
                     Point newPos = new Point(x, y);
-                    _ghost.setPosition(newPos);
+                    m_ghost.setPosition(newPos);
                 }
                 break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
-                if(_ghost != null) {
-                    Point newPos = coordinatesToGrid(_ghost.getX(), _ghost.getY(), true);
-                    Point oldPos = new Point(_ghost.getCar().getCol(), _ghost.getCar().getRow());
+                //Moving out of the screen is handled like releasing a finger
+                if(m_ghost != null) {
+                    Point newPos = coordinatesToGrid(m_ghost.getX(), m_ghost.getY(), true);
+                    Point oldPos = new Point(m_ghost.getCar().getCol(), m_ghost.getCar().getRow());
                     int offset = 0;
-                    switch(_ghost.getCar().getOrientation()) {
+                    switch(m_ghost.getCar().getOrientation()) {
                         case Horizontal:
                             offset = newPos.x - oldPos.x;
                             break;
@@ -189,10 +193,10 @@ public class DrawView extends View {
                             break;
                     }
                     if(offset != 0) {
-                        handler.actionPerformed(new Action(_ghost.getId(), offset));
+                        m_handler.actionPerformed(new Action(m_ghost.getId(), offset));
                     }
                 }
-                _ghost = null;
+                m_ghost = null;
                 break;
         }
         invalidate();
@@ -201,11 +205,11 @@ public class DrawView extends View {
     }
 
     public void disableTouch() {
-        _touchEnabled = false;
+        m_touchEnabled = false;
     }
 
     public void enableTouch() {
-        _touchEnabled = true;
+        m_touchEnabled = true;
     }
 
     /**
@@ -214,8 +218,8 @@ public class DrawView extends View {
      */
     private Point coordinatesToGrid(int x, int y, boolean round) {
         int col, row;
-        int columnWidth = getWidth() / handler.getCols();
-        int rowHeight = getHeight() / handler.getRows();
+        int columnWidth = getWidth() / m_handler.getCols();
+        int rowHeight = getHeight() / m_handler.getRows();
         if(round) {
             col = Math.round(x / (float)columnWidth);
             row = Math.round(y / (float)rowHeight);
@@ -231,8 +235,8 @@ public class DrawView extends View {
      */
     private Point gridToCoordinates(int column, int row) {
         int x, y;
-        int columnWidth = getWidth() / handler.getCols();
-        int rowHeight = getHeight() / handler.getRows();
+        int columnWidth = getWidth() / m_handler.getCols();
+        int rowHeight = getHeight() / m_handler.getRows();
 
         x = column * columnWidth;
         y = row * rowHeight;
@@ -249,7 +253,7 @@ public class DrawView extends View {
     private Car getCar(int x, int y) {
         Point gridPoint = coordinatesToGrid(x, y, false);
 
-        List<Car> cars = handler.getCars();
+        List<Car> cars = m_handler.getCars();
         for(Car car : cars) {
             switch(car.getOrientation()) {
                 case Horizontal:
