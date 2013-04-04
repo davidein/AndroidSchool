@@ -118,14 +118,7 @@ public class DrawView extends View {
     public void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         int min = w < h ? w : h;
-        //if (w > h)
-        //{
-        //    setLayoutParams(new RelativeLayout.LayoutParams(min, min));
-        //}
-        //else
-        //{
-            setLayoutParams(new LinearLayout.LayoutParams(min, min));
-        //}
+        setLayoutParams(new LinearLayout.LayoutParams(min, min));
     }
 
     @Override
@@ -195,7 +188,9 @@ public class DrawView extends View {
                             offset = newPos.y - oldPos.y;
                             break;
                     }
-                    handler.actionPerformed(new Action(_ghost.getId(), offset));
+                    if(offset != 0) {
+                        handler.actionPerformed(new Action(_ghost.getId(), offset));
+                    }
                 }
                 _ghost = null;
                 break;
