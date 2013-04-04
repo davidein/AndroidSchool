@@ -23,6 +23,7 @@ public class ChooseChallengeActivity extends FragmentActivity {
 
     private ViewPager pager;
     private SliderPageAdapter adapter;
+    private int currentPage = 0;
 
     private final int levelsPerFragment = 9;
     private Map<Integer, String> fragmentMap = new HashMap<Integer, String>();
@@ -37,6 +38,12 @@ public class ChooseChallengeActivity extends FragmentActivity {
         super.onResume();
         pager = (ViewPager)findViewById(R.id.pager);
         adapter = new SliderPageAdapter(getLayoutInflater());
+        pager.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+
+
+            }
+        });
         pager.setAdapter(adapter);
 
         SQLHelper helper = new SQLHelper(getBaseContext());
@@ -62,14 +69,20 @@ public class ChooseChallengeActivity extends FragmentActivity {
                 adapter.addPage(challenge, fragmentLevels);
             }
         }
+        pager.setCurrentItem(currentPage);
         adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        adapter = null;
-        pager.setAdapter(null);
+    public void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+        bundle.putInt("currentPage", pager.getCurrentItem());
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle bundle) {
+        super.onRestoreInstanceState(bundle);
+        currentPage = bundle.getInt("currentPage", 0);
     }
 
     public void levelClick(View view) {
