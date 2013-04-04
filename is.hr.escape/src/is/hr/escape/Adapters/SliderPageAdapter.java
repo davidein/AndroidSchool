@@ -16,7 +16,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * User: Heiðar Þórðarson
+ * A SliderPageAdapter is the data adapter for the view pager used in the choose challenge activity.
+ *
+ * It contains a list of pages where each page is a challenge and a list of its puzzles.
+ * Since each page displays the puzzles in a grid, the adapter defines another inner adapter
+ * for the gridview
  */
 
 public class SliderPageAdapter extends PagerAdapter {
@@ -72,16 +76,16 @@ public class SliderPageAdapter extends PagerAdapter {
         }
     }
 
-
+    /**
+     * The leveldapater renders a view for each puzzle in a given challenge
+     */
     private class LevelAdapter extends BaseAdapter {
         private LayoutInflater inflater;
         private List<Level> levels;
-        private SQLHelper sqlHelper;
 
         public LevelAdapter(LayoutInflater inflater, List<Level> levels) {
             this.inflater = inflater;
             this.levels = levels;
-            sqlHelper = new SQLHelper(inflater.getContext());
         }
 
         public int getCount() {
