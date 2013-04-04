@@ -139,6 +139,28 @@ public class SQLHelper extends SQLiteOpenHelper {
         return false;
     }
 
+    public Challenge getChallenge(int challengeId)
+    {
+        _db = this.getReadableDatabase();
+
+        Cursor cursor = _db.query(CHALLENGE_TABLE_NAME, new String[] {"ch_id, name"}, "ch_id = ?", new String[] {String.valueOf(challengeId)}, "", "", "ch_id" );
+
+        Challenge challenge = null;
+
+        while (cursor.moveToNext())
+        {
+            int identityColumnIndex = cursor.getColumnIndex("ch_id");
+            int nameColumnIndex = cursor.getColumnIndex("name");
+
+            int identity = cursor.getInt(identityColumnIndex);
+            String name = cursor.getString(nameColumnIndex);
+
+            challenge = new Challenge(identity, name);
+        }
+
+        return challenge;
+    }
+
     public List<Challenge> getAllChallenges()
     {
         _db = this.getReadableDatabase();

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import is.hr.escape.helpers.Challenge;
 import is.hr.escape.helpers.Level;
 import is.hr.escape.helpers.Orientation;
 import is.hr.escape.helpers.SQLHelper;
@@ -34,6 +35,9 @@ public class GameActivity extends Activity implements GameHandler {
     private int levelId;
     private int challengeId;
 
+    private TextView levelTextView;
+    private TextView challengeTextView;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         logic = new GameLogic();
@@ -42,9 +46,18 @@ public class GameActivity extends Activity implements GameHandler {
         drawView = (DrawView) findViewById(R.id.drawView);
         drawView.setGameHandler(this);
 
+        levelTextView = (TextView) findViewById(R.id.level);
+        challengeTextView = (TextView) findViewById(R.id.challenge);
+
         currentLevel = getIntent().getStringExtra("level");
         levelId = getIntent().getIntExtra("levelId", 0);
         challengeId = getIntent().getIntExtra("challengeId", 0);
+
+        levelTextView.setText( String.format("Level %d", levelId));
+
+        SQLHelper sqlHelper = new SQLHelper(getBaseContext());
+        Challenge challenge = sqlHelper.getChallenge( challengeId);
+        challengeTextView.setText(challenge.name);
 
         setup();
     }
@@ -94,6 +107,11 @@ public class GameActivity extends Activity implements GameHandler {
                 currentLevel = level.level;
                 levelId = level.levelId;
                 challengeId = level.challengeId;
+                levelTextView.setText( String.format("Level %d", levelId));
+
+                Challenge challenge = sqlHelper.getChallenge( challengeId);
+                challengeTextView.setText(challenge.name);
+
                 setup();
                 updateMoves();
             }
