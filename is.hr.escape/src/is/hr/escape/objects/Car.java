@@ -3,9 +3,7 @@ package is.hr.escape.objects;
 import android.graphics.*;
 
 /**
- * User: David Einarsson
- * Date: 23.3.2013
- * Time: 10:33
+ * A car is a block which can be moved either horizontally or vertically by the user.
  */
 public class Car {
     private Orientation m_orientation;
