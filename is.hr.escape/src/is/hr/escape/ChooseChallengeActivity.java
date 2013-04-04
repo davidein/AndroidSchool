@@ -57,13 +57,6 @@ public class ChooseChallengeActivity extends FragmentActivity {
                 }
 
                 fragmentLevels.add(level);
-                /*
-                if(fragmentLevels.size() >= levelsPerFragment) {
-                    adapter.addPage(challenge, fragmentLevels);
-
-                    fragmentLevels = null;
-                }
-                */
             }
             if(fragmentLevels != null) {
                 adapter.addPage(challenge, fragmentLevels);
@@ -91,6 +84,7 @@ public class ChooseChallengeActivity extends FragmentActivity {
         intent.putExtra("level", level.level);
         intent.putExtra("levelId", level.levelId);
         intent.putExtra("challengeId", level.challengeId);
+        currentPage = pager.getCurrentItem();
         startActivity(intent);
     }
 }
