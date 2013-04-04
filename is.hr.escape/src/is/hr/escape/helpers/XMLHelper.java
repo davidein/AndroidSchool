@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * User: Heiðar Þórðarson
+ * The XMLHelper provides an interface to load the bundled levels from assets
  */
 public class XMLHelper {
     private static String CHALLENGE_LIST_XML_PATH = "challengelist.xml";
