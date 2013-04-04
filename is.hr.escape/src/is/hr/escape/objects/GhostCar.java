@@ -4,54 +4,50 @@ import android.graphics.*;
 import is.hr.escape.objects.Car.Orientation;
 
 /**
- * Created with IntelliJ IDEA.
- * User: heidar
- * Date: 3/23/13
- * Time: 1:57 PM
- * To change this template use File | Settings | File Templates.
+ * A ghost car is a car which is currently being touched by the user.
+ * It's drawn in a different way than a car and knows not to move beyond given m_bounds
  */
 public class GhostCar {
-    private int x;
-    private int y;
-    private int id;
-    private Rect bounds;
-    private Point originalPosition;
-    private Point offset;
-    private Orientation orientation;
-    private Car car;
+    private int m_col;
+    private int m_row;
+    private int m_id;
+    private Rect m_bounds;
+    private Point m_offset;
+    private Orientation m_orientation;
+    private Car m_car;
 
     public GhostCar(Car car, Point coordinates, Rect bounds, Point touchOffset) {
-        id = car.getId();
-        x = coordinates.x;
-        y = coordinates.y;
-        this.bounds = bounds;
-        offset = touchOffset;
-        orientation = car.getOrientation();
-        this.car = car;
+        m_id = car.getId();
+        m_col = coordinates.x;
+        m_row = coordinates.y;
+        m_bounds = bounds;
+        m_offset = touchOffset;
+        m_orientation = car.getOrientation();
+        m_car = car;
     }
 
-    public int getX() { return x; }
+    public int getCol() { return m_col; }
 
-    public int getY() { return y; }
+    public int getRow() { return m_row; }
 
-    public int getId() { return id; }
+    public int getId() { return m_id; }
 
-    public Car getCar() { return car; }
+    public Car getCar() { return m_car; }
 
     public void setPosition(Point newPos) {
-        if(orientation == Orientation.Vertical) {
-            y = newPos.y + offset.y;
-            if(y < bounds.top) {
-                y = bounds.top;
-            } else if (y > bounds.bottom) {
-                y = bounds.bottom;
+        if(m_orientation == Orientation.Vertical) {
+            m_row = newPos.y + m_offset.y;
+            if(m_row < m_bounds.top) {
+                m_row = m_bounds.top;
+            } else if (m_row > m_bounds.bottom) {
+                m_row = m_bounds.bottom;
             }
         } else {
-            x = newPos.x + offset.x;
-            if(x < bounds.left) {
-                x = bounds.left;
-            } else if(x > bounds.right) {
-                x = bounds.right;
+            m_col = newPos.x + m_offset.x;
+            if(m_col < m_bounds.left) {
+                m_col = m_bounds.left;
+            } else if(m_col > m_bounds.right) {
+                m_col = m_bounds.right;
             }
         }
     }

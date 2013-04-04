@@ -73,11 +73,11 @@ public class DrawView extends View {
             RectF carRect = new RectF();
             if (ghostCar.getOrientation() == Orientation.Horizontal)
             {
-                carRect.set(m_ghost.getX(), m_ghost.getY(), m_ghost.getX() + (ghostCar.getLength() * baseWidth), m_ghost.getY() + baseHeight);
+                carRect.set(m_ghost.getCol(), m_ghost.getRow(), m_ghost.getCol() + (ghostCar.getLength() * baseWidth), m_ghost.getRow() + baseHeight);
             }
             else
             {
-                carRect.set(m_ghost.getX(), m_ghost.getY(), m_ghost.getX() + baseWidth, m_ghost.getY() + (ghostCar.getLength()) * baseHeight);
+                carRect.set(m_ghost.getCol(), m_ghost.getRow(), m_ghost.getCol() + baseWidth, m_ghost.getRow() + (ghostCar.getLength()) * baseHeight);
             }
             ghostCar.Draw(canvas, carRect, m_woodTexture);
             ghostCar.set_isGhost(false);
@@ -181,7 +181,7 @@ public class DrawView extends View {
             case MotionEvent.ACTION_UP:
                 //Moving out of the screen is handled like releasing a finger
                 if(m_ghost != null) {
-                    Point newPos = coordinatesToGrid(m_ghost.getX(), m_ghost.getY(), true);
+                    Point newPos = coordinatesToGrid(m_ghost.getCol(), m_ghost.getRow(), true);
                     Point oldPos = new Point(m_ghost.getCar().getCol(), m_ghost.getCar().getRow());
                     int offset = 0;
                     switch(m_ghost.getCar().getOrientation()) {
