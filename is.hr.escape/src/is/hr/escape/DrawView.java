@@ -102,8 +102,6 @@ public class DrawView extends View {
         baseText.setColor(Color.WHITE);
         baseText.setTextSize(30);
 
-        canvas.drawText("Finish line", 4 * baseWidth + 50, 3 * baseHeight + 70, baseText);
-
         Paint linePainter = new Paint();
         linePainter.setColor(Color.BLACK);
         linePainter.setAlpha(200);
