@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:orientation="vertical"
         android:layout_weight="1"
+        android:id="@+id/level_item"
         android:layout_gravity="center"
         android:background="@drawable/container_level_select"
             >
