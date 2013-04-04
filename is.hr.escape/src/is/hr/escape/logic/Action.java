@@ -1,14 +1,7 @@
 package is.hr.escape.logic;
 
 /**
- * Created with IntelliJ IDEA.
- * User: heidar
- * Date: 3/23/13
- * Time: 11:06 AM
- * To change this template use File | Settings | File Templates.
- */
-/**
- * Action class
+ * A POJO class representing a single action which can be performed by a car
  */
 public class Action {
 
