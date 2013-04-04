@@ -1,11 +1,9 @@
 package is.hr.escape.objects;
 
 /**
- * Created with IntelliJ IDEA.
- * User: heidar
- * Date: 3/30/13
- * Time: 6:27 PM
- * To change this template use File | Settings | File Templates.
+ * A POJO class for levels in the game containing the challenge it belongs to,
+ * the best move count a user has previously beaten the level in, its id and
+ * the level setup string which can be used to initialize the level by the game logic.
  */
 public class Level {
     public final int m_challengeId;
