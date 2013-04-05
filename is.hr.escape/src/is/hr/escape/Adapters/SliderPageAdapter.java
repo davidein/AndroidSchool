@@ -122,6 +122,7 @@ public class SliderPageAdapter extends PagerAdapter {
 
             if (score == 0)
             {
+                linearLayoutItem.setBackgroundResource(R.drawable.container_level_select);
                 levelScoreTxt.setText("No score!");
             }
             else
